@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useState } from 'react';
+import React from 'react';
 import LoginUser from './pages/LoginUser';
 import BrandSelect from './pages/BrandSelect';
 import Home from './pages/Home';
@@ -29,22 +29,7 @@ const App: React.FC = () => {
   const [expires, setExpires] = React.useState('');
   const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
 
-  // Refs y estado para el padding dinámico
-  const headerRef = useRef<HTMLDivElement>(null);
-  const footerRef = useRef<HTMLDivElement>(null);
-  const [mainPadding, setMainPadding] = useState({ top: 0, bottom: 0 });
-
-
-  useLayoutEffect(() => {
-    const updatePadding = () => {
-      const headerHeight = headerRef.current?.offsetHeight || 0;
-      const footerHeight = footerRef.current?.offsetHeight || 0;
-      setMainPadding({ top: headerHeight, bottom: footerHeight });
-    };
-    updatePadding();
-    window.addEventListener('resize', updatePadding);
-    return () => window.removeEventListener('resize', updatePadding);
-  }, []);
+  // El layout se maneja con flexbox, por lo que no es necesario calcular paddings dinámicos
 
   React.useEffect(() => {
     const stored = localStorage.getItem('theme') as 'light' | 'dark' | null;
@@ -164,19 +149,10 @@ const App: React.FC = () => {
     );
 
   return (
-    <div className="h-screen flex flex-col bg-gray-900">
-      <Header ref={headerRef} onChangeBrand={handleChangeBrand} onLogout={handleLogout} />
-      <main
-        className="flex-1 overflow-y-auto brand-scroll"
-        style={{
-          paddingTop: mainPadding.top,
-          paddingBottom: mainPadding.bottom,
-          maxHeight: `calc(100vh - ${mainPadding.top + mainPadding.bottom}px)`,
-        }}
-      >
-        {content}
-      </main>
-      <Footer ref={footerRef} theme={theme} onToggle={toggleTheme} />
+    <div className="h-screen flex flex-col bg-gray-900 overflow-hidden">
+      <Header onChangeBrand={handleChangeBrand} onLogout={handleLogout} />
+      <main className="flex-1 overflow-y-auto brand-scroll">{content}</main>
+      <Footer theme={theme} onToggle={toggleTheme} />
     </div>
   );
 };

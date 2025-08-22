@@ -25,7 +25,10 @@ const Header = forwardRef<HTMLDivElement, Props>(({ onChangeBrand, onLogout }, r
     : "h-8 sm:h-10 md:h-12 w-auto";
 
   return (
-    <header ref={ref} className="fixed top-0 left-0 right-0 z-50 w-full px-4 sm:px-8 py-2 sm:py-3 bg-white dark:bg-gray-900 shadow-md border-b border-green-200 dark:border-gray-700">
+    <header
+      ref={ref}
+      className="w-full px-4 sm:px-8 py-2 sm:py-3 bg-white dark:bg-gray-900 shadow-md border-b border-green-200 dark:border-gray-700 flex-shrink-0"
+    >
       <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
         <div className="flex items-center gap-3 max-h-10">
           <img

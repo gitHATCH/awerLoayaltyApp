@@ -33,7 +33,10 @@ const Footer = forwardRef<HTMLDivElement, Props>(({ theme, onToggle }, ref) => {
   };
 
   return (
-    <footer ref={ref} className="fixed bottom-0 left-0 right-0 z-50 w-full px-4 sm:px-8 py-2 sm:py-3 bg-white dark:bg-gray-900 shadow-md border-t border-green-200 dark:border-gray-700 flex justify-center items-center">
+    <footer
+      ref={ref}
+      className="w-full px-4 sm:px-8 py-2 sm:py-3 bg-white dark:bg-gray-900 shadow-md border-t border-green-200 dark:border-gray-700 flex justify-center items-center flex-shrink-0"
+    >
       <div className="flex items-center gap-3">
         <button
           ref={buttonRef}
