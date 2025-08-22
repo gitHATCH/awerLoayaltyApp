@@ -1,8 +1,8 @@
-import React from 'react';
-import Toast from '../components/Toast';
-import Spinner from '../components/Spinner';
-import { UserProfile, addPoints } from '../api/points';
-import userIcon from '../assets/user-default.svg';
+import React from "react";
+import Toast from "../components/Toast";
+import Spinner from "../components/Spinner";
+import { UserProfile, addPoints } from "../api/points";
+import userIcon from "../assets/user-default.svg";
 
 interface Props {
   profile: UserProfile;
@@ -10,21 +10,22 @@ interface Props {
   onNext: (updated: UserProfile, added: number, expires: string) => void;
 }
 
-const RATE = 10; // 1 punto cada 10$
+const RATE = 10; // 1 punto cada $10
 
 const levelColors: Record<string, string> = {
-  BRONZE: 'bg-amber-700',
-  SILVER: 'bg-gray-300',
-  GOLD: 'bg-yellow-400',
-  PLATINUM: 'bg-gray-400',
+  BRONZE: "bg-amber-600 text-white",
+  SILVER: "bg-gray-300 text-gray-800",
+  GOLD: "bg-yellow-400 text-yellow-900",
+  PLATINUM: "bg-gray-400 text-gray-900",
 };
 
 const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
-  const [amount, setAmount] = React.useState('');
+  const [amount, setAmount] = React.useState("");
   const [toast, setToast] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
 
-  const points = Math.floor((parseFloat(amount) || 0) / RATE);
+  const valueNum = parseFloat(amount) || 0;
+  const points = Math.floor(valueNum / RATE);
 
   const handleNext = () => {
     const value = parseFloat(amount);
@@ -35,80 +36,175 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
     }
     setLoading(true);
     addPoints(value)
-      .then(({ profile: p, added, expires }) => {
-        onNext(p, added, expires);
-      })
+      .then(({ profile: p, added, expires }) => onNext(p, added, expires))
       .finally(() => setLoading(false));
   };
 
-  const medalColor = levelColors[profile.level] || 'bg-gray-300';
+  const medalClass = levelColors[profile.level] || "bg-gray-300 text-gray-900";
+
+  // progreso hacia el próximo nivel (aprox)
+  const progress =
+    profile.pointsToNext && profile.pointsToNext > 0
+      ? Math.min(
+        100,
+        Math.round((profile.points / (profile.points + profile.pointsToNext)) * 100)
+      )
+      : 100;
 
   if (loading)
     return (
-      <div className="min-h-full flex items-center justify-center">
-        <Spinner />
+      <div className="min-h-full flex items-center justify-center px-4 py-10">
+        <div className="w-full max-w-md bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 rounded-3xl shadow-2xl p-8 text-center">
+          <Spinner />
+          <p className="mt-3 text-sm text-gray-600 dark:text-gray-300">Procesando…</p>
+        </div>
       </div>
     );
 
   return (
-    <div className="min-h-full flex items-center justify-center relative">
-      <button onClick={onBack} className="absolute top-4 left-4 text-3xl text-green-600 font-bold">←</button>
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md w-full max-w-lg flex flex-col gap-6 relative text-gray-800 dark:text-gray-100">
-        <div className={`absolute top-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white text-xs font-bold ${medalColor}`}>
-          {profile.level}
-        </div>
-        <div className="flex items-center gap-4">
-          <img
-            src={profile.avatar || userIcon}
-            alt={profile.name}
-            className="w-16 h-16 rounded-full"
-          />
-          <div>
-            <h3 className="text-xl font-semibold">{profile.name}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">{profile.email}</p>
+    <div className="min-h-full w-full flex items-center justify-center px-3 sm:px-6 py-6">
+      {/* Card principal */}
+      <div className="w-full max-w-3xl bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 rounded-3xl shadow-2xl overflow-hidden animate-fade-in relative">
+        {/* Encabezado visual + Botón volver */}
+        <div className="relative">
+          {/* Volver (flotante, centrado en Y, hover verde en light) */}
+          <button
+            onClick={onBack}
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full
+                     bg-white dark:bg-gray-800
+                     border border-green-300 dark:border-green-600
+                     p-2 shadow
+                     hover:bg-green-50 dark:hover:bg-gray-700
+                     transition"
+            aria-label="Volver"
+            title="Volver"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-5 w-5 text-green-700 dark:text-green-300">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+
+          <div className="h-24 sm:h-28 bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 dark:from-green-700 dark:via-emerald-700 dark:to-green-800 rounded-t-3xl" />
+          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2">
+            <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-2xl bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 shadow-xl flex items-center justify-center">
+              {/* Ícono usuario */}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-10 w-10 text-green-600 dark:text-green-400">
+                <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm-7.5 8.25A8.25 8.25 0 0 1 12 12.75a8.25 8.25 0 0 1 7.5 7.5.75.75 0 0 1-.75.75h-13.5a.75.75 0 0 1-.75-.75Z" />
+              </svg>
+            </div>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-4 text-center">
-          <div>
-            <p className="font-semibold">Puntos actuales</p>
-            <p>{profile.points}</p>
+
+        {/* Contenido */}
+        <div className="px-5 sm:px-8 pt-14 pb-6">
+          {/* Tarjeta de perfil (responsive) */}
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-4 sm:p-6 mb-6">
+            <div className="flex items-start gap-4">
+              <img
+                src={profile.avatar || userIcon}
+                alt={profile.name}
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-green-400 dark:border-green-600 object-cover bg-white dark:bg-gray-800 flex-shrink-0"
+              />
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                  <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-gray-900 dark:text-white truncate">
+                    {profile.name}
+                  </h2>
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${medalClass}`}>
+                    {profile.level}
+                  </span>
+                </div>
+                <p className="mt-1 text-sm sm:text-base text-gray-600 dark:text-gray-300 truncate">
+                  {profile.email}
+                </p>
+              </div>
+            </div>
+
+            {/* KPIs */}
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+              <div className="rounded-xl bg-gray-50 dark:bg-gray-800/60 p-3">
+                <p className="text-sm text-gray-600 dark:text-gray-300">Puntos actuales</p>
+                <p className="mt-1 text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
+                  {profile.points.toLocaleString()}
+                </p>
+              </div>
+              <div className="rounded-xl bg-gray-50 dark:bg-gray-800/60 p-3">
+                <p className="text-sm text-gray-600 dark:text-gray-300">Próximo nivel</p>
+                <p className="mt-1 text-base sm:text-xl font-bold text-gray-900 dark:text-white flex items-center justify-center gap-2">
+                  {profile.nextLevel}
+                  <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                    ({profile.pointsToNext} pts)
+                  </span>
+                </p>
+              </div>
+              <div className="rounded-xl bg-gray-50 dark:bg-gray-800/60 p-3">
+                <p className="text-sm text-gray-600 dark:text-gray-300">Total canjeado</p>
+                <p className="mt-1 text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
+                  {profile.totalRedeemed.toLocaleString()}
+                </p>
+              </div>
+            </div>
+
+            {/* Progreso */}
+            <div className="mt-5">
+              <div className="h-2 rounded-full bg-gray-200 dark:bg-gray-800 overflow-hidden">
+                <div
+                  className="h-full bg-green-500 rounded-full transition-all"
+                  style={{ width: `${progress}%` }}
+                  aria-label={`Progreso: ${progress}%`}
+                />
+              </div>
+            </div>
+
+            {/* Vencimientos (opcional) */}
+            {profile.expiring && (
+              <div className="mt-3 text-center text-xs sm:text-sm text-red-600 dark:text-red-400">
+                Próximos a vencer:{" "}
+                <b>{profile.expiring.points}</b> pts el{" "}
+                <b>{profile.expiring.date}</b>
+              </div>
+            )}
           </div>
-          <div>
-            <p className="font-semibold">Próximo nivel</p>
-            <p>
-              {profile.nextLevel} ({profile.pointsToNext} pts)
-            </p>
+
+          {/* Tasa y formulario */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 items-end">
+            <div>
+              <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-2">
+                Ganás <b>1 punto</b> por cada <b>${RATE}</b>
+              </p>
+              <div className="relative">
+                <span className="absolute inset-y-0 left-3 flex items-center text-gray-500 dark:text-gray-400 select-none">$</span>
+                <input
+                  type="number"
+                  min={0}
+                  step="0.01"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  placeholder="Monto de la compra"
+                  className="w-full pl-7 pr-16 py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+                <span className="absolute inset-y-0 right-3 flex items-center text-sm text-gray-600 dark:text-gray-300">
+                  {points} pts
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={handleNext}
+              disabled={valueNum < RATE}
+              className="w-full h-[48px] sm:h-[52px] rounded-full font-extrabold text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 shadow-lg transition"
+            >
+              Sumar mis puntos
+            </button>
           </div>
-          <div>
-            <p className="font-semibold">Total canjeado</p>
-            <p>{profile.totalRedeemed}</p>
+
+          {/* Hint */}
+          <div className="mt-6 rounded-2xl border border-dashed border-green-300 dark:border-green-700 bg-green-50/60 dark:bg-green-950/40 px-4 py-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+            Consejo: revisá el progreso y vencimientos antes de acreditar.
           </div>
         </div>
-        {profile.expiring && (
-          <div className="text-center text-sm text-red-500">
-            Próximos a vencer: {profile.expiring.points} pts el {profile.expiring.date}
-          </div>
-        )}
-        <div className="flex items-center gap-2">
-          <span>Ganas 1 punto por cada ${RATE}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span>$</span>
-          <input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className="flex-1 px-3 py-2 border rounded bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
-          />
-          <span className="whitespace-nowrap">{points} pts</span>
-        </div>
-        <button
-          onClick={handleNext}
-          className="w-full py-2 border border-green-500 rounded-full text-green-600 hover:bg-green-50 dark:hover:bg-gray-700"
-        >
-          Acreditar puntos
-        </button>
       </div>
+
       {toast && <Toast message={toast} type="error" />}
     </div>
   );

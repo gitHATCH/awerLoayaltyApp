@@ -29,8 +29,6 @@ const App: React.FC = () => {
   const [expires, setExpires] = React.useState('');
   const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
 
-  // El layout se maneja con flexbox, por lo que no es necesario calcular paddings dinámicos
-
   React.useEffect(() => {
     const stored = localStorage.getItem('theme') as 'light' | 'dark' | null;
     if (stored) setTheme(stored);
@@ -120,10 +118,7 @@ const App: React.FC = () => {
   const handleClosePoints = () => setScreen('home');
 
   if (screen === 'loading')
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Spinner />
-      </div>
+    return (<div className="min-h-screen flex items-center justify-center"> <Spinner /> </div>
     );
   if (screen === 'login1') return <LoginUser onLogin={handleLogged} />;
   if (screen === 'login2') return <BrandSelect onSelect={handleBrand} onLogout={handleLogout} />;
@@ -138,22 +133,16 @@ const App: React.FC = () => {
   else if (screen === 'points2' && profile)
     content = <PointsStep2 profile={profile} onBack={handleBackPoints2} onNext={handlePointsNext2} />;
   else if (screen === 'points3' && profile)
-    content = (
-      <PointsStepFinal
-        profile={profile}
-        added={added}
-        expires={expires}
-        onBack={handleBackPoints3}
-        onClose={handleClosePoints}
-      />
+    content = (<PointsStepFinal
+      profile={profile}
+      added={added}
+      expires={expires}
+      onBack={handleBackPoints3}
+      onClose={handleClosePoints}
+    />
     );
 
-  return (
-    <div className="h-screen flex flex-col bg-gray-900 overflow-hidden">
-      <Header onChangeBrand={handleChangeBrand} onLogout={handleLogout} />
-      <main className="flex-1 overflow-y-auto brand-scroll">{content}</main>
-      <Footer theme={theme} onToggle={toggleTheme} />
-    </div>
+  return (<div className="h-screen flex flex-col bg-transparent overflow-hidden"> <Header onChangeBrand={handleChangeBrand} onLogout={handleLogout} /> <main className="flex-1 overflow-y-auto brand-scroll">{content}</main> <Footer theme={theme} onToggle={toggleTheme} /> </div>
   );
 };
 

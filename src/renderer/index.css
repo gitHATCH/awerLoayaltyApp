@@ -3,8 +3,9 @@
 @tailwind utilities;
 
 body {
-  @apply text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-900;
-  background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+  @apply text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-900;
+  /* puntos VERDES en modo light */
+  background-image: radial-gradient(#bbf7d0 1px, transparent 1px); /* emerald-100 */
   background-size: 20px 20px;
   font-family: 'Inter', system-ui, sans-serif;
 }
@@ -15,7 +16,7 @@ html, body {
 }
 
 html.dark body {
-  background-image: radial-gradient(#374151 1px, transparent 1px);
+  background-image: radial-gradient(#374151 1px, transparent 1px); /* gris para dark */
 }
 
 /* Scroll personalizado para la lista de marcas */
