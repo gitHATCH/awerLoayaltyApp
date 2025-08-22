@@ -21,6 +21,7 @@ export async function mockFetchBrands(): Promise<Brand[]> {
   ];
 }
 
+
 export interface Pos {
   id: string;
   name: string;
@@ -33,3 +34,4 @@ export async function mockFetchPos(brandId: string): Promise<Pos[]> {
     name: `Sucursal ${i + 1}`
   }));
 }
+
