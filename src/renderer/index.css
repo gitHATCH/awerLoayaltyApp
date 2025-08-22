@@ -12,3 +12,25 @@ body {
 html.dark body {
   background-image: radial-gradient(#374151 1px, transparent 1px);
 }
+
+/* Scroll personalizado para la lista de marcas */
+.brand-scroll::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 8px;
+}
+.brand-scroll::-webkit-scrollbar-thumb {
+  background: #a7f3d0; /* verde claro para light */
+  border-radius: 8px;
+}
+.brand-scroll::-webkit-scrollbar-track {
+  background: #f3f4f6; /* gris claro para light */
+  border-radius: 8px;
+}
+
+/* Dark mode scroll */
+.dark .brand-scroll::-webkit-scrollbar-thumb {
+  background: #059669; /* verde oscuro para dark */
+}
+.dark .brand-scroll::-webkit-scrollbar-track {
+  background: #1f2937; /* gris oscuro para dark */
+}
