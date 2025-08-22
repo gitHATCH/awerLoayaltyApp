@@ -103,6 +103,7 @@ export async function mockFetchUser(email: string): Promise<UserProfile> {
     throw new Error('Usuario no registrado en el programa de puntos');
   }
   mockUser = { ...user };
+
   return mockUser;
 }
 

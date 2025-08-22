@@ -8,8 +8,10 @@ import PointsStepFinal from './pages/PointsStepFinal';
 
 import PosSelect from './pages/PosSelect';
 import { Brand, Pos, mockFetchPos, UserProfile } from './api/mock';
+
 import Header from './components/Header';
 import Footer from './components/Footer';
+
 
 type Screen = 'login1' | 'login2' | 'home' | 'pos' | 'points1' | 'points2' | 'points3';
 
@@ -27,6 +29,7 @@ const App: React.FC = () => {
   const [profile, setProfile] = React.useState<UserProfile | null>(null);
   const [added, setAdded] = React.useState(0);
   const [expires, setExpires] = React.useState('');
+
   const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
 
   React.useEffect(() => {
@@ -40,6 +43,7 @@ const App: React.FC = () => {
   }, [theme]);
 
   const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+
 
   React.useEffect(() => {
     const token = localStorage.getItem('token');
@@ -103,6 +107,7 @@ const App: React.FC = () => {
   if (screen === 'login1') return <LoginUser onLogin={handleLogged} />;
   if (screen === 'login2') return <BrandSelect onSelect={handleBrand} onLogout={handleLogout} />;
 
+
   let content: React.ReactNode = null;
   if (screen === 'home')
     content = <Home onChangePos={handleChangePos} onLoadPoints={handleStartPoints} />;
@@ -114,6 +119,7 @@ const App: React.FC = () => {
     content = <PointsStep2 profile={profile} onBack={handleBackPoints2} onNext={handlePointsNext2} />;
   else if (screen === 'points3' && profile)
     content = (
+
       <PointsStepFinal
         profile={profile}
         added={added}
@@ -123,12 +129,14 @@ const App: React.FC = () => {
       />
     );
 
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header onChangeBrand={handleChangeBrand} onLogout={handleLogout} />
       <main className="flex-1">{content}</main>
       <Footer theme={theme} onToggle={toggleTheme} />
     </div>
+
   );
 
 };

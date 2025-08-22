@@ -27,6 +27,7 @@ const Home: React.FC<Props> = ({ onChangePos, onLoadPoints }) => {
       <button className="w-64 py-3 border border-green-500 rounded-full text-green-600 hover:bg-green-50 dark:hover:bg-gray-700">
         Configuración
       </button>
+
     </div>
   );
 };
