@@ -10,6 +10,15 @@ interface Props {
   onClose: () => void;
 }
 
+
+const levelColors: Record<string, string> = {
+  BRONZE: 'bg-amber-700',
+  SILVER: 'bg-gray-300',
+  GOLD: 'bg-yellow-400',
+  PLATINUM: 'bg-gray-400',
+};
+
+
 const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onClose }) => {
   const [toast, setToast] = React.useState<string | null>(null);
 
@@ -19,10 +28,17 @@ const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onC
     return () => clearTimeout(t);
   }, []);
 
+
+  const medalColor = levelColors[profile.level] || 'bg-gray-300';
+
   return (
     <div className="min-h-screen flex items-center justify-center relative">
       <button onClick={onBack} className="absolute top-4 left-4 text-2xl">←</button>
-      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-lg flex flex-col gap-6">
+      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-lg flex flex-col gap-6 relative">
+        <div className={`absolute top-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white text-xs font-bold ${medalColor}`}>
+          {profile.level}
+        </div>
+
         <div className="flex items-center gap-4">
           <img
             src={profile.avatar || 'https://via.placeholder.com/80'}

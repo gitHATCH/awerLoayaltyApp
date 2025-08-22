@@ -49,24 +49,61 @@ export interface UserProfile {
   expiring?: { points: number; date: string };
 }
 
-let mockUser: UserProfile = {
-  id: '1',
-  name: 'Alejandro',
-  email: 'alejandro@example.com',
-  dni: '12345678',
-  points: 1200,
-  level: 'SILVER',
-  nextLevel: 'GOLD',
-  pointsToNext: 300,
-  totalRedeemed: 3400,
-  expiring: { points: 100, date: '2024-12-31' }
-};
+const mockUsers: UserProfile[] = [
+  {
+    id: '1',
+    name: 'Alejandro',
+    email: 'alejandro@example.com',
+    dni: '12345678',
+    points: 1200,
+    level: 'SILVER',
+    nextLevel: 'GOLD',
+    pointsToNext: 300,
+    totalRedeemed: 3400,
+    expiring: { points: 100, date: '2024-12-31' },
+  },
+  {
+    id: '2',
+    name: 'Beatriz',
+    email: 'beatriz@example.com',
+    dni: '23456789',
+    points: 800,
+    level: 'BRONZE',
+    nextLevel: 'SILVER',
+    pointsToNext: 200,
+    totalRedeemed: 1500,
+  },
+  {
+    id: '3',
+    name: 'Carlos',
+    email: 'carlos@example.com',
+    dni: '34567890',
+    points: 2000,
+    level: 'GOLD',
+    nextLevel: 'PLATINUM',
+    pointsToNext: 500,
+    totalRedeemed: 5000,
+    expiring: { points: 50, date: '2024-10-31' },
+  },
+];
 
-export async function mockFetchUser(dni: string, email: string): Promise<UserProfile> {
+let mockUser: UserProfile = mockUsers[0];
+
+export async function mockSearchEmails(query: string): Promise<string[]> {
+  await new Promise(res => setTimeout(res, 200));
+  return mockUsers
+    .map(u => u.email)
+    .filter(email => email.includes(query));
+}
+
+export async function mockFetchUser(email: string): Promise<UserProfile> {
   await new Promise(res => setTimeout(res, 500));
-  if (dni !== mockUser.dni || email !== mockUser.email) {
+  const user = mockUsers.find(u => u.email === email);
+  if (!user) {
     throw new Error('Usuario no registrado en el programa de puntos');
   }
+  mockUser = { ...user };
+
   return mockUser;
 }
 
