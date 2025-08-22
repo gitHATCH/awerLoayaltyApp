@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Toast from '../components/Toast';
 import { UserProfile } from '../api/points';
+import userIcon from '../assets/user-default.svg';
 
 interface Props {
   profile: UserProfile;
@@ -37,7 +38,7 @@ const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onC
         </div>
         <div className="flex items-center gap-4">
           <img
-            src={profile.avatar || 'https://via.placeholder.com/80'}
+            src={profile.avatar || userIcon}
             alt={profile.name}
             className="w-16 h-16 rounded-full"
           />

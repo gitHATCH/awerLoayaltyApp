@@ -2,6 +2,7 @@ import React from 'react';
 import Toast from '../components/Toast';
 import Spinner from '../components/Spinner';
 import { UserProfile, addPoints } from '../api/points';
+import userIcon from '../assets/user-default.svg';
 
 interface Props {
   profile: UserProfile;
@@ -58,7 +59,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
         </div>
         <div className="flex items-center gap-4">
           <img
-            src={profile.avatar || 'https://via.placeholder.com/80'}
+            src={profile.avatar || userIcon}
             alt={profile.name}
             className="w-16 h-16 rounded-full"
           />

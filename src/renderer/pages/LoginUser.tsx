@@ -31,20 +31,20 @@ const LoginUser: React.FC<Props> = ({ onLogin }) => {
     <div className="min-h-screen flex items-center justify-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-xl shadow-md w-full max-w-md flex flex-col gap-4"
+        className="bg-white dark:bg-gray-800 text-gray-800 dark:text-white p-8 rounded-xl shadow-md w-full max-w-md flex flex-col gap-4"
       >
         <div className="text-center">
           <h1 className="text-xl font-semibold mb-4">Inicio de sesión Awer Loyalty</h1>
         </div>
         <input
-          className="border rounded px-3 py-2"
+          className="border rounded px-3 py-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           placeholder="Usuario"
           value={user}
           onChange={(e) => setUser(e.target.value)}
           required
         />
         <input
-          className="border rounded px-3 py-2"
+          className="border rounded px-3 py-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
           type="password"
           placeholder="Contraseña"
           value={password}
