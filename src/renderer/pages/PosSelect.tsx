@@ -18,7 +18,8 @@ const PosSelect: React.FC<Props> = ({ onSelect, onCancel }) => {
   const filtered = poses.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center relative">
+      <button onClick={onCancel} className="absolute top-4 left-4 text-2xl">←</button>
       <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-lg flex flex-col gap-4">
         <h1 className="text-xl font-semibold text-center">Seleccione el punto de venta</h1>
         <input
@@ -39,12 +40,6 @@ const PosSelect: React.FC<Props> = ({ onSelect, onCancel }) => {
             </button>
           ))}
         </div>
-        <button
-          onClick={onCancel}
-          className="mt-2 px-4 py-1 border border-red-500 rounded-full text-red-600 hover:bg-red-50"
-        >
-          Cancelar
-        </button>
       </div>
     </div>
   );

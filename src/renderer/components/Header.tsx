@@ -7,7 +7,7 @@ interface Props {
 
 const Header: React.FC<Props> = ({ onChangeBrand, onLogout }) => {
   return (
-    <header className="flex justify-between items-center p-4">
+    <header className="flex justify-between items-center p-4 bg-white shadow">
       <div className="flex items-center text-2xl font-bold text-green-600">
         <span className="mr-2">★</span> AWER Reviews
       </div>
