@@ -5,7 +5,7 @@
   "main": "dist/main/main.js",
   "scripts": {
   "dev:renderer": "vite",
-  "dev:main": "WATCH=true tsup --watch",
+  "dev:main": "cross-env WATCH=true tsup --watch",
   "dev:electron": "wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .",
   "dev": "concurrently -k -n RENDERER,MAIN,ELECTRON \"npm:dev:renderer\" \"npm:dev:main\" \"npm:dev:electron\"",
 
