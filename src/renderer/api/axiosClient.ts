@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const axiosClient = axios.create({
-  baseURL: 'https://api.example.com', // TODO: set real API base URL
+  // Use base URL from environment variable (defined in .env)
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 axiosClient.interceptors.request.use((config) => {

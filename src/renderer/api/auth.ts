@@ -29,11 +29,11 @@ export async function fetchBrands(): Promise<Brand[]> {
   // TODO: return (await axiosClient.get<Brand[]>('/brands')).data;
   await delay(500);
   return [
-    { id: 'kentucky', name: 'Kentucky', logo: 'https://via.placeholder.com/80?text=K' },
-    { id: 'chickenchill', name: 'Chicken Chill', logo: 'https://via.placeholder.com/80?text=C' },
-    { id: 'churritas', name: 'Churritas', logo: 'https://via.placeholder.com/80?text=CH' },
-    { id: 'sbarro', name: 'Sbarro', logo: 'https://via.placeholder.com/80?text=S' },
-    { id: 'sunny', name: 'Sunny', logo: 'https://via.placeholder.com/80?text=SU' },
+    { id: 'kentucky', name: 'Kentucky', logo: 'https://picsum.photos/seed/kentucky/80/80' },
+    { id: 'chickenchill', name: 'Chicken Chill', logo: 'https://picsum.photos/seed/chickenchill/80/80' },
+    { id: 'churritas', name: 'Churritas', logo: 'https://picsum.photos/seed/churritas/80/80' },
+    { id: 'sbarro', name: 'Sbarro', logo: 'https://picsum.photos/seed/sbarro/80/80' },
+    { id: 'sunny', name: 'Sunny', logo: 'https://picsum.photos/seed/sunny/80/80' },
   ];
 }
 
