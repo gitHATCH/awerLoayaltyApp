@@ -1,6 +1,7 @@
 import React from 'react';
 import Toast from '../components/Toast';
-import { UserProfile, mockAddPoints } from '../api/mock';
+import Spinner from '../components/Spinner';
+import { UserProfile, addPoints } from '../api/points';
 
 interface Props {
   profile: UserProfile;
@@ -10,7 +11,6 @@ interface Props {
 
 const RATE = 10; // 1 punto cada 10$
 
-
 const levelColors: Record<string, string> = {
   BRONZE: 'bg-amber-700',
   SILVER: 'bg-gray-300',
@@ -18,10 +18,10 @@ const levelColors: Record<string, string> = {
   PLATINUM: 'bg-gray-400',
 };
 
-
 const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
   const [amount, setAmount] = React.useState('');
   const [toast, setToast] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
 
   const points = Math.floor((parseFloat(amount) || 0) / RATE);
 
@@ -32,13 +32,22 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
       setTimeout(() => setToast(null), 3000);
       return;
     }
-    mockAddPoints(value).then(({ profile: p, added, expires }) => {
-      onNext(p, added, expires);
-    });
+    setLoading(true);
+    addPoints(value)
+      .then(({ profile: p, added, expires }) => {
+        onNext(p, added, expires);
+      })
+      .finally(() => setLoading(false));
   };
 
-
   const medalColor = levelColors[profile.level] || 'bg-gray-300';
+
+  if (loading)
+    return (
+      <div className="min-h-full flex items-center justify-center">
+        <Spinner />
+      </div>
+    );
 
   return (
     <div className="min-h-full flex items-center justify-center relative">
@@ -47,7 +56,6 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
         <div className={`absolute top-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white text-xs font-bold ${medalColor}`}>
           {profile.level}
         </div>
-
         <div className="flex items-center gap-4">
           <img
             src={profile.avatar || 'https://via.placeholder.com/80'}
@@ -56,9 +64,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
           />
           <div>
             <h3 className="text-xl font-semibold">{profile.name}</h3>
-
             <p className="text-sm text-gray-600 dark:text-gray-300">{profile.email}</p>
-
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4 text-center">
@@ -91,17 +97,13 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
             type="number"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-
             className="flex-1 px-3 py-2 border rounded bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
-
           />
           <span className="whitespace-nowrap">{points} pts</span>
         </div>
         <button
           onClick={handleNext}
-
           className="w-full py-2 border border-green-500 rounded-full text-green-600 hover:bg-green-50 dark:hover:bg-gray-700"
-
         >
           Acreditar puntos
         </button>

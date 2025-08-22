@@ -1,5 +1,6 @@
 import React from 'react';
-import { Brand, mockFetchBrands } from '../api/mock';
+import { Brand, fetchBrands } from '../api/auth';
+import Spinner from '../components/Spinner';
 
 interface Props {
   onSelect: (brand: Brand) => void;
@@ -8,10 +9,21 @@ interface Props {
 
 const BrandSelect: React.FC<Props> = ({ onSelect, onLogout }) => {
   const [brands, setBrands] = React.useState<Brand[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    mockFetchBrands().then(setBrands);
+    fetchBrands().then((b) => {
+      setBrands(b);
+      setLoading(false);
+    });
   }, []);
+
+  if (loading)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner />
+      </div>
+    );
 
   return (
     <div className="min-h-screen flex items-center justify-center">

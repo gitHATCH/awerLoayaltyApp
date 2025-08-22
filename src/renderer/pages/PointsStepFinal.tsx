@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Toast from '../components/Toast';
-import { UserProfile } from '../api/mock';
+import { UserProfile } from '../api/points';
 
 interface Props {
   profile: UserProfile;
@@ -10,14 +10,12 @@ interface Props {
   onClose: () => void;
 }
 
-
 const levelColors: Record<string, string> = {
   BRONZE: 'bg-amber-700',
   SILVER: 'bg-gray-300',
   GOLD: 'bg-yellow-400',
   PLATINUM: 'bg-gray-400',
 };
-
 
 const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onClose }) => {
   const [toast, setToast] = React.useState<string | null>(null);
@@ -28,7 +26,6 @@ const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onC
     return () => clearTimeout(t);
   }, []);
 
-
   const medalColor = levelColors[profile.level] || 'bg-gray-300';
 
   return (
@@ -38,7 +35,6 @@ const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onC
         <div className={`absolute top-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white text-xs font-bold ${medalColor}`}>
           {profile.level}
         </div>
-
         <div className="flex items-center gap-4">
           <img
             src={profile.avatar || 'https://via.placeholder.com/80'}
@@ -47,9 +43,7 @@ const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onC
           />
           <div>
             <h3 className="text-xl font-semibold">{profile.name}</h3>
-
             <p className="text-sm text-gray-600 dark:text-gray-300">{profile.email}</p>
-
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4 text-center">
@@ -78,9 +72,7 @@ const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onC
         </div>
         <button
           onClick={onClose}
-
           className="w-full py-2 border border-green-500 rounded-full text-green-600 hover:bg-green-50 dark:hover:bg-gray-700"
-
         >
           Cerrar
         </button>

@@ -7,13 +7,13 @@ import PointsStep2 from './pages/PointsStep2';
 import PointsStepFinal from './pages/PointsStepFinal';
 
 import PosSelect from './pages/PosSelect';
-import { Brand, Pos, mockFetchPos, UserProfile } from './api/mock';
-
+import { Brand, Pos, fetchPos, authenticate } from './api/auth';
+import { UserProfile } from './api/points';
+import Spinner from './components/Spinner';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
-
-type Screen = 'login1' | 'login2' | 'home' | 'pos' | 'points1' | 'points2' | 'points3';
+type Screen = 'loading' | 'login1' | 'login2' | 'home' | 'pos' | 'points1' | 'points2' | 'points3';
 
 
 declare global {
@@ -25,11 +25,10 @@ declare global {
 }
 
 const App: React.FC = () => {
-  const [screen, setScreen] = React.useState<Screen>('login1');
+  const [screen, setScreen] = React.useState<Screen>('loading');
   const [profile, setProfile] = React.useState<UserProfile | null>(null);
   const [added, setAdded] = React.useState(0);
   const [expires, setExpires] = React.useState('');
-
   const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
 
   React.useEffect(() => {
@@ -44,25 +43,42 @@ const App: React.FC = () => {
 
   const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
 
-
   React.useEffect(() => {
-    const token = localStorage.getItem('token');
-    const brand = localStorage.getItem('brand');
-    if (!token) setScreen('login1');
-    else if (!brand) setScreen('login2');
-    else setScreen('home');
+    const init = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setScreen('login1');
+        return;
+      }
+      const ok = await authenticate();
+      if (!ok) {
+        localStorage.removeItem('token');
+        setScreen('login1');
+        return;
+      }
+      const brand = localStorage.getItem('brand');
+      if (!brand) {
+        setScreen('login2');
+        return;
+      }
+      const poses = await fetchPos(brand);
+      const stored = localStorage.getItem('pos');
+      localStorage.setItem('pos', stored || poses[0]?.name || 'Punto de Venta');
+      setScreen('home');
+    };
+    init();
   }, []);
 
   const handleLogged = () => setScreen('login2');
 
   const handleBrand = (brand: Brand) => {
     localStorage.setItem('brand', brand.id);
-
-    mockFetchPos(brand.id).then((poses) => {
-      localStorage.setItem('pos', poses[0]?.name || 'Punto de Venta');
+    setScreen('loading');
+    fetchPos(brand.id).then((poses) => {
+      const stored = localStorage.getItem('pos');
+      localStorage.setItem('pos', stored || poses[0]?.name || 'Punto de Venta');
       setScreen('home');
     });
-
   };
 
   const handleLogout = () => {
@@ -104,9 +120,14 @@ const App: React.FC = () => {
   const handleBackPoints3 = () => setScreen('points2');
   const handleClosePoints = () => setScreen('home');
 
+  if (screen === 'loading')
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner />
+      </div>
+    );
   if (screen === 'login1') return <LoginUser onLogin={handleLogged} />;
   if (screen === 'login2') return <BrandSelect onSelect={handleBrand} onLogout={handleLogout} />;
-
 
   let content: React.ReactNode = null;
   if (screen === 'home')
@@ -119,7 +140,6 @@ const App: React.FC = () => {
     content = <PointsStep2 profile={profile} onBack={handleBackPoints2} onNext={handlePointsNext2} />;
   else if (screen === 'points3' && profile)
     content = (
-
       <PointsStepFinal
         profile={profile}
         added={added}
@@ -129,14 +149,12 @@ const App: React.FC = () => {
       />
     );
 
-
   return (
     <div className="min-h-screen flex flex-col">
       <Header onChangeBrand={handleChangeBrand} onLogout={handleLogout} />
       <main className="flex-1">{content}</main>
       <Footer theme={theme} onToggle={toggleTheme} />
     </div>
-
   );
 
 };

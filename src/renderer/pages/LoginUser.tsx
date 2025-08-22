@@ -1,5 +1,6 @@
 import React from 'react';
-import { mockLogin } from '../api/mock';
+import { login } from '../api/auth';
+import Spinner from '../components/Spinner';
 
 interface Props {
   onLogin: () => void;
@@ -13,11 +14,18 @@ const LoginUser: React.FC<Props> = ({ onLogin }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { token } = await mockLogin(user, password);
+    const { token } = await login(user, password);
     localStorage.setItem('token', token);
     setLoading(false);
     onLogin();
   };
+
+  if (loading)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner />
+      </div>
+    );
 
   return (
     <div className="min-h-screen flex items-center justify-center">
