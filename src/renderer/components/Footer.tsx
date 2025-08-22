@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 interface Props {
   theme: 'light' | 'dark';
   onToggle: () => void;
 }
 
-const Footer: React.FC<Props> = ({ theme, onToggle }) => {
+const Footer = forwardRef<HTMLDivElement, Props>(({ theme, onToggle }, ref) => {
   const [open, setOpen] = React.useState(false);
   const menuRef = React.useRef<HTMLDivElement>(null);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
@@ -33,7 +33,7 @@ const Footer: React.FC<Props> = ({ theme, onToggle }) => {
   };
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 z-50 w-full px-4 sm:px-8 py-2 sm:py-3 bg-white dark:bg-gray-900 shadow-md border-t border-green-200 dark:border-gray-700 flex justify-center items-center">
+    <footer ref={ref} className="fixed bottom-0 left-0 right-0 z-50 w-full px-4 sm:px-8 py-2 sm:py-3 bg-white dark:bg-gray-900 shadow-md border-t border-green-200 dark:border-gray-700 flex justify-center items-center">
       <div className="flex items-center gap-3">
         <button
           ref={buttonRef}
@@ -80,6 +80,6 @@ const Footer: React.FC<Props> = ({ theme, onToggle }) => {
       </div>
     </footer>
   );
-};
+});
 
 export default Footer;

@@ -9,6 +9,11 @@ body {
   font-family: 'Inter', system-ui, sans-serif;
 }
 
+html, body {
+  height: 100%;
+  overflow: hidden; /* Oculta el scroll global */
+}
+
 html.dark body {
   background-image: radial-gradient(#374151 1px, transparent 1px);
 }
