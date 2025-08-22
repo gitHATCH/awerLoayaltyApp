@@ -2,6 +2,7 @@ import React from 'react';
 import Toast from '../components/Toast';
 import { mockFetchUser, mockSearchEmails, UserProfile } from '../api/mock';
 
+
 interface Props {
   onBack: () => void;
   onNext: (profile: UserProfile) => void;
@@ -24,6 +25,7 @@ const PointsStep1: React.FC<Props> = ({ onBack, onNext }) => {
 
   const handleNext = () => {
     mockFetchUser(email)
+
       .then(onNext)
       .catch((e) => {
         setToast(e.message);
@@ -39,6 +41,7 @@ const PointsStep1: React.FC<Props> = ({ onBack, onNext }) => {
           <span className="mr-2">★</span> AWER Reviews
         </div>
         <h2 className="text-center">Cargue los datos del usuario</h2>
+
         <div className="relative w-full">
           <input
             type="email"
@@ -64,6 +67,7 @@ const PointsStep1: React.FC<Props> = ({ onBack, onNext }) => {
             </ul>
           )}
         </div>
+
         <button
           onClick={handleNext}
           className="w-full py-2 mt-2 border border-green-500 rounded-full text-green-600 hover:bg-green-50"

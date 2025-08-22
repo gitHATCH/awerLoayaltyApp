@@ -10,12 +10,14 @@ interface Props {
 
 const RATE = 10; // 1 punto cada 10$
 
+
 const levelColors: Record<string, string> = {
   BRONZE: 'bg-amber-700',
   SILVER: 'bg-gray-300',
   GOLD: 'bg-yellow-400',
   PLATINUM: 'bg-gray-400',
 };
+
 
 const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
   const [amount, setAmount] = React.useState('');
@@ -35,6 +37,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
     });
   };
 
+
   const medalColor = levelColors[profile.level] || 'bg-gray-300';
 
   return (
@@ -44,6 +47,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
         <div className={`absolute top-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white text-xs font-bold ${medalColor}`}>
           {profile.level}
         </div>
+
         <div className="flex items-center gap-4">
           <img
             src={profile.avatar || 'https://via.placeholder.com/80'}
