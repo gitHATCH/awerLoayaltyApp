@@ -9,6 +9,10 @@ import PointsStepFinal from './pages/PointsStepFinal';
 import PosSelect from './pages/PosSelect';
 import { Brand, Pos, mockFetchPos, UserProfile } from './api/mock';
 
+import Header from './components/Header';
+import Footer from './components/Footer';
+
+
 type Screen = 'login1' | 'login2' | 'home' | 'pos' | 'points1' | 'points2' | 'points3';
 
 
@@ -25,6 +29,21 @@ const App: React.FC = () => {
   const [profile, setProfile] = React.useState<UserProfile | null>(null);
   const [added, setAdded] = React.useState(0);
   const [expires, setExpires] = React.useState('');
+
+  const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
+
+  React.useEffect(() => {
+    const stored = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    if (stored) setTheme(stored);
+  }, []);
+
+  React.useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+
 
   React.useEffect(() => {
     const token = localStorage.getItem('token');
@@ -87,12 +106,20 @@ const App: React.FC = () => {
 
   if (screen === 'login1') return <LoginUser onLogin={handleLogged} />;
   if (screen === 'login2') return <BrandSelect onSelect={handleBrand} onLogout={handleLogout} />;
-  if (screen === 'pos') return <PosSelect onSelect={handleSelectPos} onCancel={handleCancelPos} />;
-  if (screen === 'points1') return <PointsStep1 onBack={handleBackPoints1} onNext={handlePointsNext1} />;
-  if (screen === 'points2' && profile)
-    return <PointsStep2 profile={profile} onBack={handleBackPoints2} onNext={handlePointsNext2} />;
-  if (screen === 'points3' && profile)
-    return (
+
+
+  let content: React.ReactNode = null;
+  if (screen === 'home')
+    content = <Home onChangePos={handleChangePos} onLoadPoints={handleStartPoints} />;
+  else if (screen === 'pos')
+    content = <PosSelect onSelect={handleSelectPos} onCancel={handleCancelPos} />;
+  else if (screen === 'points1')
+    content = <PointsStep1 onBack={handleBackPoints1} onNext={handlePointsNext1} />;
+  else if (screen === 'points2' && profile)
+    content = <PointsStep2 profile={profile} onBack={handleBackPoints2} onNext={handlePointsNext2} />;
+  else if (screen === 'points3' && profile)
+    content = (
+
       <PointsStepFinal
         profile={profile}
         added={added}
@@ -101,13 +128,15 @@ const App: React.FC = () => {
         onClose={handleClosePoints}
       />
     );
+
+
   return (
-    <Home
-      onChangeBrand={handleChangeBrand}
-      onLogout={handleLogout}
-      onChangePos={handleChangePos}
-      onLoadPoints={handleStartPoints}
-    />
+    <div className="min-h-screen flex flex-col">
+      <Header onChangeBrand={handleChangeBrand} onLogout={handleLogout} />
+      <main className="flex-1">{content}</main>
+      <Footer theme={theme} onToggle={toggleTheme} />
+    </div>
+
   );
 
 };

@@ -32,9 +32,9 @@ const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onC
   const medalColor = levelColors[profile.level] || 'bg-gray-300';
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative">
-      <button onClick={onBack} className="absolute top-4 left-4 text-2xl">←</button>
-      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-lg flex flex-col gap-6 relative">
+    <div className="min-h-full flex items-center justify-center relative">
+      <button onClick={onBack} className="absolute top-4 left-4 text-3xl text-green-600 font-bold">←</button>
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md w-full max-w-lg flex flex-col gap-6 relative text-gray-800 dark:text-gray-100">
         <div className={`absolute top-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white text-xs font-bold ${medalColor}`}>
           {profile.level}
         </div>
@@ -47,7 +47,9 @@ const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onC
           />
           <div>
             <h3 className="text-xl font-semibold">{profile.name}</h3>
-            <p className="text-sm text-gray-600">{profile.email}</p>
+
+            <p className="text-sm text-gray-600 dark:text-gray-300">{profile.email}</p>
+
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4 text-center">
@@ -76,7 +78,9 @@ const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onC
         </div>
         <button
           onClick={onClose}
-          className="w-full py-2 border border-green-500 rounded-full text-green-600 hover:bg-green-50"
+
+          className="w-full py-2 border border-green-500 rounded-full text-green-600 hover:bg-green-50 dark:hover:bg-gray-700"
+
         >
           Cerrar
         </button>
