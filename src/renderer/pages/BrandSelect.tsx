@@ -36,7 +36,12 @@ const BrandSelect: React.FC<Props> = ({ onSelect, onLogout }) => {
               onClick={() => onSelect(b)}
               className="flex flex-col items-center gap-1 text-gray-800 dark:text-white"
             >
-              <img src={b.logo} alt={b.name} className="h-16 w-16 rounded-full border dark:border-gray-600" />
+              <img
+                src={b.logo}
+                alt={b.name}
+                className="h-16 w-16 rounded-full border dark:border-gray-600"
+                onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/80?text=No+Img'; }}
+              />
               <span className="text-sm">{b.name}</span>
             </button>
           ))}
