@@ -4,9 +4,12 @@ import Header from '../components/Header';
 interface Props {
   onChangeBrand: () => void;
   onLogout: () => void;
+
+  onChangePos: () => void;
 }
 
-const Home: React.FC<Props> = ({ onChangeBrand, onLogout }) => {
+const Home: React.FC<Props> = ({ onChangeBrand, onLogout, onChangePos }) => {
+
   const pos = localStorage.getItem('pos') || 'Punto de Venta';
 
   return (
@@ -17,7 +20,12 @@ const Home: React.FC<Props> = ({ onChangeBrand, onLogout }) => {
         <button className="w-64 py-3 border border-green-500 rounded-full text-green-600 hover:bg-green-50">
           Cargar puntos
         </button>
-        <button className="w-64 py-3 border border-green-500 rounded-full text-green-600 hover:bg-green-50">
+
+        <button
+          className="w-64 py-3 border border-green-500 rounded-full text-green-600 hover:bg-green-50"
+          onClick={onChangePos}
+        >
+
           Cambiar punto de venta
         </button>
         <button className="w-64 py-3 border border-green-500 rounded-full text-green-600 hover:bg-green-50">

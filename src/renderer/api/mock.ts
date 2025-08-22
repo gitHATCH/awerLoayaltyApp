@@ -20,3 +20,18 @@ export async function mockFetchBrands(): Promise<Brand[]> {
     { id: 'sunny', name: 'Sunny', logo: 'https://via.placeholder.com/80?text=SU' }
   ];
 }
+
+
+export interface Pos {
+  id: string;
+  name: string;
+}
+
+export async function mockFetchPos(brandId: string): Promise<Pos[]> {
+  await new Promise(res => setTimeout(res, 500));
+  return Array.from({ length: 20 }).map((_, i) => ({
+    id: `${brandId}-pos-${i + 1}`,
+    name: `Sucursal ${i + 1}`
+  }));
+}
+

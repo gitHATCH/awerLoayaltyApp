@@ -2,9 +2,12 @@ import React from 'react';
 import LoginUser from './pages/LoginUser';
 import BrandSelect from './pages/BrandSelect';
 import Home from './pages/Home';
-import { Brand } from './api/mock';
 
-type Screen = 'login1' | 'login2' | 'home';
+import PosSelect from './pages/PosSelect';
+import { Brand, Pos, mockFetchPos } from './api/mock';
+
+type Screen = 'login1' | 'login2' | 'home' | 'pos';
+
 
 declare global {
   interface Window {
@@ -29,8 +32,12 @@ const App: React.FC = () => {
 
   const handleBrand = (brand: Brand) => {
     localStorage.setItem('brand', brand.id);
-    localStorage.setItem('pos', `${brand.name} 1`);
-    setScreen('home');
+
+    mockFetchPos(brand.id).then((poses) => {
+      localStorage.setItem('pos', poses[0]?.name || 'Punto de Venta');
+      setScreen('home');
+    });
+
   };
 
   const handleLogout = () => {
@@ -46,9 +53,21 @@ const App: React.FC = () => {
     setScreen('login2');
   };
 
+
+  const handleChangePos = () => setScreen('pos');
+
+  const handleSelectPos = (pos: Pos) => {
+    localStorage.setItem('pos', pos.name);
+    setScreen('home');
+  };
+
+  const handleCancelPos = () => setScreen('home');
+
   if (screen === 'login1') return <LoginUser onLogin={handleLogged} />;
   if (screen === 'login2') return <BrandSelect onSelect={handleBrand} onLogout={handleLogout} />;
-  return <Home onChangeBrand={handleChangeBrand} onLogout={handleLogout} />;
+  if (screen === 'pos') return <PosSelect onSelect={handleSelectPos} onCancel={handleCancelPos} />;
+  return <Home onChangeBrand={handleChangeBrand} onLogout={handleLogout} onChangePos={handleChangePos} />;
+
 };
 
 export default App;
