@@ -80,7 +80,7 @@ const Home: React.FC<Props> = ({ onChangePos, onLoadPoints }) => {
             </button>
 
             {/* Configuración (placeholder sin handler) */}
-            <button
+            {/* <button
               type="button"
               className="group w-full rounded-2xl px-5 py-4 sm:py-5 text-left border border-gray-200 dark:border-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-900 dark:text-white shadow transition-all"
               aria-label="Configuración"
@@ -96,7 +96,7 @@ const Home: React.FC<Props> = ({ onChangePos, onLoadPoints }) => {
                   <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Preferencias y apariencia</p>
                 </div>
               </div>
-            </button>
+            </button> */}
 
             {/* Ayuda (placeholder) */}
             {/* Ayuda y soporte */}

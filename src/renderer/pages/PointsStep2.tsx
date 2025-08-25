@@ -162,29 +162,44 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
           </div>
 
           {/* Tasa y formulario */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 items-end">
-            <div>
-              <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-2">
-                Ganás <b>1 punto</b> por cada <b>${RATE}</b>
-              </p>
+          <div>
+            <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-2">
+              Ganás <b>1 punto</b> por cada <b>${RATE}</b>
+            </p>
 
-              <div className="relative">
-                <span className="absolute inset-y-0 left-3 flex items-center text-gray-500 dark:text-gray-400 select-none">$</span>
-                <input
-                  type="number"
-                  min={0}
-                  step="0.01"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder="Monto de la compra"
-                  className="w-full pl-7 pr-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
-                />
+            {/* GRID: col1 (input fila 1 + badge fila 2), col2 (botón) */}
+            <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center gap-4 sm:gap-x-6">
+              {/* Input (fila 1, col 1) */}
+              <div className="sm:col-start-1 sm:row-start-1">
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-3 flex items-center text-gray-500 dark:text-gray-400 select-none">
+                    $
+                  </span>
+                  <input
+                    type="number"
+                    min={0}
+                    step="0.01"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="Monto de la compra"
+                    className="w-full pl-7 pr-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
               </div>
 
-              {/* Badge de puntos debajo del input (no tapa nada) */}
-              <div className="min-h-[1.5rem]" aria-live="polite">
+              {/* Botón (fila 1, col 2) — alineado con el input */}
+              <button
+                onClick={handleNext}
+                disabled={valueNum < RATE}
+                className="sm:col-start-2 sm:row-start-1 w-full sm:w-auto px-6 sm:px-10 h-[48px] sm:h-[52px] rounded-full font-extrabold text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 shadow-lg transition"
+              >
+                Sumar mis puntos
+              </button>
+
+              {/* Badge (fila 2, col 1) — debajo del input, no afecta alineación del botón */}
+              <div className="sm:col-start-1 sm:row-start-2 min-h-[1.5rem]" aria-live="polite">
                 {valueNum >= RATE && (
-                  <span className="mt-2 inline-flex items-center gap-1 px-2 py-1 rounded-full border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-950/40 text-xs sm:text-sm text-green-700 dark:text-green-300">
+                  <span className="mt-1 inline-flex items-center gap-1 px-2 py-1 rounded-full border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-950/40 text-xs sm:text-sm text-green-700 dark:text-green-300">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
                       <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm1 14-3-3h2V8h2v5h2Z" />
                     </svg>
@@ -193,14 +208,6 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
                 )}
               </div>
             </div>
-
-            <button
-              onClick={handleNext}
-              disabled={valueNum < RATE}
-              className="w-full h-[48px] sm:h-[52px] rounded-full font-extrabold text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 shadow-lg transition"
-            >
-              Sumar mis puntos
-            </button>
           </div>
 
           <div className="mt-6 rounded-2xl border border-dashed border-green-300 dark:border-green-700 bg-green-50/60 dark:bg-green-950/40 px-4 py-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300">
