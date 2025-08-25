@@ -49,11 +49,12 @@ const App: React.FC = () => {
         return;
       }
       const ok = await authenticate();
-      if (!ok) {
-        localStorage.removeItem('token');
-        setScreen('login1');
-        return;
-      }
+        if (!ok) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('refresh_token');
+          setScreen('login1');
+          return;
+        }
       const brand = localStorage.getItem('brand');
       if (!brand) {
         setScreen('login2');
@@ -80,6 +81,7 @@ const App: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('refresh_token');
     localStorage.removeItem('brand');
     localStorage.removeItem('pos');
     setScreen('login1');

@@ -25,8 +25,9 @@ const LoginUser: React.FC<Props> = ({ onLogin }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { token } = await login(user, password);
-    localStorage.setItem('token', token);
+    const { access_token, refresh_token } = await login(user, password);
+    localStorage.setItem('token', access_token);
+    localStorage.setItem('refresh_token', refresh_token);
     setLoading(false);
     onLogin();
   };

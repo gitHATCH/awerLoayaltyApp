@@ -13,10 +13,28 @@ export interface Pos {
 
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
-export async function login(user: string, password: string): Promise<{ token: string }> {
-  // TODO: replace with real POST /login call
-  await delay(500);
-  return { token: `mock-token-${user}` };
+export interface AuthResponse {
+  access_token: string;
+  token_type: string;
+  refresh_token: string;
+  expires_in: number;
+  scope: string;
+  sub: string;
+  aud: string;
+  roles: string[];
+  iss: string;
+  scopes: string[];
+  jti: string;
+}
+
+export async function login(username: string, password: string): Promise<AuthResponse> {
+  const params = new URLSearchParams({ username, password });
+  const { data } = await axiosClient.post<AuthResponse>(
+    '/awer-auth/oauth/token?grant_type=password',
+    params,
+    { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
+  );
+  return data;
 }
 
 export async function authenticate(): Promise<boolean> {
