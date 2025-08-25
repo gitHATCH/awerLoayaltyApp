@@ -114,7 +114,7 @@ const App: React.FC = () => {
   };
   const handleBackPoints1 = () => setScreen('home');
   const handleBackPoints2 = () => setScreen('points1');
-  const handleBackPoints3 = () => setScreen('points2');
+  const handleBackPoints3 = () => setScreen('points1');
   const handleClosePoints = () => setScreen('home');
 
   if (screen === 'loading')

@@ -29,6 +29,19 @@ const mockUsers: UserProfile[] = [
     expiring: { points: 100, date: '2024-12-31' },
   },
   {
+    id: '4',
+    name: 'Alejandro',
+    email: 'alejandro2@example.com',
+    dni: '12345678',
+    avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
+    points: 1200,
+    level: 'SILVER',
+    nextLevel: 'GOLD',
+    pointsToNext: 300,
+    totalRedeemed: 3400,
+    expiring: { points: 100, date: '2024-12-31' },
+  },
+  {
     id: '2',
     name: 'Beatriz',
     email: 'beatriz@example.com',
@@ -62,6 +75,12 @@ export async function searchUsers(query: string): Promise<string[]> {
   // TODO: return (await axiosClient.get<string[]>('/users/search', { params: { q: query } })).data;
   await delay(200);
   return mockUsers.map(u => u.email).filter(e => e.includes(query));
+}
+
+export async function fetchEmailsByDni(dni: string): Promise<string[]> {
+  // TODO: return (await axiosClient.get<string[]>(`/users/dni/${dni}`)).data;
+  await delay(300);
+  return mockUsers.filter(u => u.dni === dni).map(u => u.email);
 }
 
 export async function fetchUser(email: string): Promise<UserProfile> {
