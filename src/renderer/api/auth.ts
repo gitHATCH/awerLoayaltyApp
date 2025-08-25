@@ -28,12 +28,17 @@ export interface AuthResponse {
 }
 
 export async function login(username: string, password: string): Promise<AuthResponse> {
-  const params = new URLSearchParams({ username, password, grant_type:"password" });
+  const params = new URLSearchParams({ username, password, grant_type: 'password' });
   const { data } = await axiosClient.post<AuthResponse>(
-    `/awer-auth/oauth/token?grant_type=password&username=${username}&password=${password}`,
-    { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
+    '/awer-auth/oauth/token',
+    params,
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: 'Basic V0...'
+      }
+    }
   );
-  console.log("DATA: ", data)
   return data;
 }
 

@@ -9,10 +9,9 @@ console.log("BaseURL: ", import.meta.env.VITE_API_BASE_URL)
 
 axiosClient.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
-  if (token) {
-    if (config.headers) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
+  // Only attach bearer token if no Authorization header is already provided
+  if (token && config.headers && !config.headers['Authorization']) {
+    config.headers['Authorization'] = `Bearer ${token}`;
   }
   return config;
 });
