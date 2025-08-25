@@ -6,7 +6,8 @@ interface Props {
 }
 
 const Home: React.FC<Props> = ({ onChangePos, onLoadPoints }) => {
-  const pos = localStorage.getItem("pos") || "Punto de Venta";
+  const pos = localStorage.getItem("pos");
+  const posName = pos || "Punto de Venta";
 
   return (
     <div className="min-h-full w-full flex items-center justify-center px-3 sm:px-6 py-6">
@@ -31,7 +32,7 @@ const Home: React.FC<Props> = ({ onChangePos, onLoadPoints }) => {
           {/* Título y POS */}
           <div className="text-center mb-6">
             <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-gray-900 dark:text-white">
-              {pos}
+              {posName}
             </h1>
             <p className="mt-1 text-sm sm:text-base text-gray-600 dark:text-gray-300">
               Panel principal de acreditación de puntos
@@ -60,24 +61,26 @@ const Home: React.FC<Props> = ({ onChangePos, onLoadPoints }) => {
             </button>
 
             {/* Cambiar punto de venta */}
-            <button
-              onClick={onChangePos}
-              className="group w-full rounded-2xl px-5 py-4 sm:py-5 text-left border border-gray-200 dark:border-gray-700 bg-gray-50 hover:bg-green-50 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white shadow transition-all"
-              aria-label="Cambiar punto de venta"
-            >
-              <div className="flex items-center gap-3">
-                <div className="rounded-xl bg-white/80 dark:bg-gray-900/60 border border-green-200 dark:border-gray-700 p-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
-                    <path d="M3.75 6A2.25 2.25 0 0 1 6 3.75h12A2.25 2.25 0 0 1 20.25 6v1.5H3.75V6Z" />
-                    <path fillRule="evenodd" d="M3.75 9.75h16.5v7.5A2.25 2.25 0 0 1 18 19.5H6a2.25 2.25 0 0 1-2.25-2.25v-7.5Zm4.5 3a.75.75 0 0 1 .75-.75h6a.75.75 0 0 1 0 1.5h-6a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
-                  </svg>
+            {!pos && (
+              <button
+                onClick={onChangePos}
+                className="group w-full rounded-2xl px-5 py-4 sm:py-5 text-left border border-gray-200 dark:border-gray-700 bg-gray-50 hover:bg-green-50 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white shadow transition-all"
+                aria-label="Cambiar punto de venta"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="rounded-xl bg-white/80 dark:bg-gray-900/60 border border-green-200 dark:border-gray-700 p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
+                      <path d="M3.75 6A2.25 2.25 0 0 1 6 3.75h12A2.25 2.25 0 0 1 20.25 6v1.5H3.75V6Z" />
+                      <path fillRule="evenodd" d="M3.75 9.75h16.5v7.5A2.25 2.25 0 0 1 18 19.5H6a2.25 2.25 0 0 1-2.25-2.25v-7.5Zm4.5 3a.75.75 0 0 1 .75-.75h6a.75.75 0 0 1 0 1.5h-6a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-base sm:text-lg font-extrabold">Cambiar punto de venta</p>
+                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Seleccioná otro POS disponible</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-base sm:text-lg font-extrabold">Cambiar punto de venta</p>
-                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Seleccioná otro POS disponible</p>
-                </div>
-              </div>
-            </button>
+              </button>
+            )}
 
             {/* Configuración (placeholder sin handler) */}
             {/* <button

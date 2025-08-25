@@ -6,7 +6,7 @@ import PointsStep1 from './pages/PointsStep1';
 import PointsStep2 from './pages/PointsStep2';
 import PointsStepFinal from './pages/PointsStepFinal';
 import PosSelect from './pages/PosSelect';
-import { Brand, Pos, fetchPos, authenticate } from './api/auth';
+import { Brand, Pos, authenticate } from './api/auth';
 import { UserProfile } from './api/points';
 import Spinner from './components/Spinner';
 import Header from './components/Header';
@@ -59,9 +59,11 @@ const App: React.FC = () => {
         setScreen('login2');
         return;
       }
-      const poses = await fetchPos(brand);
       const stored = localStorage.getItem('pos');
-      localStorage.setItem('pos', stored || poses[0]?.name || 'Punto de Venta');
+      if (!stored) {
+        setScreen('pos');
+        return;
+      }
       setScreen('home');
     };
     init();
@@ -71,12 +73,9 @@ const App: React.FC = () => {
 
   const handleBrand = (brand: Brand) => {
     localStorage.setItem('brand', brand.id);
-    setScreen('loading');
-    fetchPos(brand.id).then((poses) => {
-      const stored = localStorage.getItem('pos');
-      localStorage.setItem('pos', stored || poses[0]?.name || 'Punto de Venta');
-      setScreen('home');
-    });
+    const stored = localStorage.getItem('pos');
+    if (!stored) setScreen('pos');
+    else setScreen('home');
   };
 
   const handleLogout = () => {
