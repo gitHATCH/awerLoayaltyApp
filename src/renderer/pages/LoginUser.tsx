@@ -1,6 +1,7 @@
 import React from 'react';
 import { login } from '../api/auth';
 import Spinner from '../components/Spinner';
+import Toast from '../components/Toast';
 
 interface Props {
   onLogin: () => void;
@@ -11,6 +12,7 @@ const LoginUser: React.FC<Props> = ({ onLogin }) => {
   const [password, setPassword] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [isDark, setIsDark] = React.useState(false);
+  const [toast, setToast] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     const html = document.documentElement;
@@ -25,10 +27,17 @@ const LoginUser: React.FC<Props> = ({ onLogin }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { token } = await login(user, password);
-    localStorage.setItem('token', token);
-    setLoading(false);
-    onLogin();
+    try {
+      const { access_token, refresh_token } = await login(user, password);
+      localStorage.setItem('token', access_token);
+      localStorage.setItem('refresh_token', refresh_token);
+      onLogin();
+    } catch {
+      setToast('Ocurrió un error, prueba de nuevo');
+      setTimeout(() => setToast(null), 3000);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const logoSrc = isDark ? "/logo-white.png" : "/logo-principal.png";
@@ -85,6 +94,7 @@ const LoginUser: React.FC<Props> = ({ onLogin }) => {
           {loading ? 'Ingresando...' : 'Iniciar sesión'}
         </button>
       </form>
+      {toast && <Toast message={toast} type="error" />}
     </div>
   );
 };
