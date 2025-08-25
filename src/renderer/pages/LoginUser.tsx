@@ -1,5 +1,5 @@
 import React from 'react';
-import { login } from '../api/auth';
+import { login, fetchCurrentUser } from '../api/auth';
 import Spinner from '../components/Spinner';
 import Toast from '../components/Toast';
 
@@ -31,8 +31,12 @@ const LoginUser: React.FC<Props> = ({ onLogin }) => {
       const { access_token, refresh_token } = await login(user, password);
       localStorage.setItem('token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
+      const { companyId } = await fetchCurrentUser();
+      if (companyId) localStorage.setItem('companyId', companyId);
       onLogin();
     } catch {
+      localStorage.removeItem('token');
+      localStorage.removeItem('refresh_token');
       setToast('Ocurrió un error, prueba de nuevo');
       setTimeout(() => setToast(null), 3000);
     } finally {

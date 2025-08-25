@@ -35,11 +35,23 @@ export async function login(username: string, password: string): Promise<AuthRes
     {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: 'Basic V0...'
+        Authorization: `Basic ${import.meta.env.VITE_BASIC_AUTH}`
       }
     }
   );
   return data;
+}
+
+export interface UserInfo {
+  companyId: string;
+}
+
+export async function fetchCurrentUser(): Promise<UserInfo> {
+  const { data } = await axiosClient.get<string>('/awer-core/users/me', { responseType: 'text' });
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(data, 'application/xml');
+  const companyId = xmlDoc.querySelector('companyId')?.textContent ?? '';
+  return { companyId };
 }
 
 export async function authenticate(): Promise<boolean> {

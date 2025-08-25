@@ -83,13 +83,12 @@ const App: React.FC = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('brand');
-    localStorage.removeItem('pos');
+    localStorage.removeItem('companyId');
     setScreen('login1');
   };
 
   const handleChangeBrand = () => {
     localStorage.removeItem('brand');
-    localStorage.removeItem('pos');
     setScreen('login2');
   };
 
