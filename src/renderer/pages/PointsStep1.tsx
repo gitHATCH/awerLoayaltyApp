@@ -202,9 +202,9 @@ const PointsStep1: React.FC<Props> = ({ onBack, onNext }) => {
           </div>
 
           {/* Hint */}
-          <div className="mt-6 rounded-2xl border border-dashed border-green-300 dark:border-green-700 bg-green-50/60 dark:bg-green-950/40 px-4 py-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+          {/* <div className="mt-6 rounded-2xl border border-dashed border-green-300 dark:border-green-700 bg-green-50/60 dark:bg-green-950/40 px-4 py-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300">
             Tip: usá <kbd className="px-1 py-0.5 rounded bg-gray-100 dark:bg-gray-800">↑</kbd>/<kbd className="px-1 py-0.5 rounded bg-gray-100 dark:bg-gray-800">↓</kbd> y <kbd className="px-1 py-0.5 rounded bg-gray-100 dark:bg-gray-800">Enter</kbd> para elegir una sugerencia. <span className="hidden sm:inline">(Esc para cerrar)</span>
-          </div>
+          </div> */}
         </div>
       </div>
 

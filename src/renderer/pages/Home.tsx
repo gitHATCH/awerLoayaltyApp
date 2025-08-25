@@ -99,23 +99,33 @@ const Home: React.FC<Props> = ({ onChangePos, onLoadPoints }) => {
             </button>
 
             {/* Ayuda (placeholder) */}
+            {/* Ayuda y soporte */}
             <a
-              href="#"
+              href="https://gestion.awerreviews.com/app/support"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group w-full rounded-2xl px-5 py-4 sm:py-5 text-left border border-gray-200 dark:border-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-900 dark:text-white shadow transition-all"
               aria-label="Ayuda y soporte"
             >
               <div className="flex items-center gap-3">
                 <div className="rounded-xl bg-white/80 dark:bg-gray-900/60 border border-green-200 dark:border-gray-700 p-2">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
-                    <path fillRule="evenodd" d="M2.25 12a9.75 9.75 0 1 1 19.5 0 9.75 9.75 0 0 1-19.5 0Zm11.172-3.03a2.625 2.625 0 0 0-4.517 1.822.75.75 0 0 1-1.5 0 4.125 4.125 0 0 1 7.1-2.856c.715.715 1.1 1.67 1.1 2.651 0 1.82-1.35 3.216-2.548 3.99-.298.195-.581.376-.8.565-.208.18-.48.476-.48.923a.75.75 0 0 1-1.5 0c0-1.114.66-1.83 1.19-2.283.28-.242.6-.444.912-.644 1.005-.66 2.126-1.694 2.126-3.551 0-.6-.237-1.176-.583-1.617ZM12 17.25a.938.938 0 1 0 0 1.875.938.938 0 0 0 0-1.875Z" clipRule="evenodd" />
+                    <path
+                      fillRule="evenodd"
+                      d="M2.25 12a9.75 9.75 0 1 1 19.5 0 9.75 9.75 0 0 1-19.5 0Zm11.172-3.03a2.625 2.625 0 0 0-4.517 1.822.75.75 0 0 1-1.5 0 4.125 4.125 0 0 1 7.1-2.856c.715.715 1.1 1.67 1.1 2.651 0 1.82-1.35 3.216-2.548 3.99-.298.195-.581.376-.8.565-.208.18-.48.476-.48.923a.75.75 0 0 1-1.5 0c0-1.114.66-1.83 1.19-2.283.28-.242.6-.444.912-.644 1.005-.66 2.126-1.694 2.126-3.551 0-.6-.237-1.176-.583-1.617ZM12 17.25a.938.938 0 1 0 0 1.875.938.938 0 0 0 0-1.875Z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </div>
                 <div>
                   <p className="text-base sm:text-lg font-extrabold">Ayuda y soporte</p>
-                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Guías rápidas y preguntas frecuentes</p>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                    Guías rápidas y preguntas frecuentes
+                  </p>
                 </div>
               </div>
             </a>
+
           </div>
 
           {/* Sugerencia / hint */}

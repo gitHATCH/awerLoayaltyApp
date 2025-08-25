@@ -228,9 +228,9 @@ const PosSelect: React.FC<Props> = ({ onSelect, onCancel }) => {
           </div>
 
           {/* Hint */}
-          <div className="mt-6 rounded-2xl border border-dashed border-green-300 dark:border-green-700 bg-green-50/60 dark:bg-green-950/40 px-4 py-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+          {/* <div className="mt-6 rounded-2xl border border-dashed border-green-300 dark:border-green-700 bg-green-50/60 dark:bg-green-950/40 px-4 py-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300">
             Tip: podés navegar la lista con ↑/↓ y confirmar con Enter (Esc para volver).
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

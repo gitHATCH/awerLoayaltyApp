@@ -67,7 +67,6 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
       <div className="w-full max-w-3xl bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 rounded-3xl shadow-2xl overflow-hidden animate-fade-in relative">
         {/* Encabezado visual + Botón volver */}
         <div className="relative">
-          {/* Volver (flotante, centrado en Y, hover verde en light) */}
           <button
             onClick={onBack}
             className="absolute left-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full
@@ -87,7 +86,6 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
           <div className="h-24 sm:h-28 bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 dark:from-green-700 dark:via-emerald-700 dark:to-green-800 rounded-t-3xl" />
           <div className="absolute -bottom-10 left-1/2 -translate-x-1/2">
             <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-2xl bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 shadow-xl flex items-center justify-center">
-              {/* Ícono usuario */}
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-10 w-10 text-green-600 dark:text-green-400">
                 <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm-7.5 8.25A8.25 8.25 0 0 1 12 12.75a8.25 8.25 0 0 1 7.5 7.5.75.75 0 0 1-.75.75h-13.5a.75.75 0 0 1-.75-.75Z" />
               </svg>
@@ -97,7 +95,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
 
         {/* Contenido */}
         <div className="px-5 sm:px-8 pt-14 pb-6">
-          {/* Tarjeta de perfil (responsive) */}
+          {/* Tarjeta de perfil */}
           <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-4 sm:p-6 mb-6">
             <div className="flex items-start gap-4">
               <img
@@ -156,12 +154,9 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
               </div>
             </div>
 
-            {/* Vencimientos (opcional) */}
             {profile.expiring && (
               <div className="mt-3 text-center text-xs sm:text-sm text-red-600 dark:text-red-400">
-                Próximos a vencer:{" "}
-                <b>{profile.expiring.points}</b> pts el{" "}
-                <b>{profile.expiring.date}</b>
+                Próximos a vencer: <b>{profile.expiring.points}</b> pts el <b>{profile.expiring.date}</b>
               </div>
             )}
           </div>
@@ -172,6 +167,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
               <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-2">
                 Ganás <b>1 punto</b> por cada <b>${RATE}</b>
               </p>
+
               <div className="relative">
                 <span className="absolute inset-y-0 left-3 flex items-center text-gray-500 dark:text-gray-400 select-none">$</span>
                 <input
@@ -181,11 +177,20 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="Monto de la compra"
-                  className="w-full pl-7 pr-16 py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full pl-7 pr-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
-                <span className="absolute inset-y-0 right-3 flex items-center text-sm text-gray-600 dark:text-gray-300">
-                  {points} pts
-                </span>
+              </div>
+
+              {/* Badge de puntos debajo del input (no tapa nada) */}
+              <div className="min-h-[1.5rem]" aria-live="polite">
+                {valueNum >= RATE && (
+                  <span className="mt-2 inline-flex items-center gap-1 px-2 py-1 rounded-full border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-950/40 text-xs sm:text-sm text-green-700 dark:text-green-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                      <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm1 14-3-3h2V8h2v5h2Z" />
+                    </svg>
+                    {points.toLocaleString()} pts a acreditar
+                  </span>
+                )}
               </div>
             </div>
 
@@ -198,7 +203,6 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
             </button>
           </div>
 
-          {/* Hint */}
           <div className="mt-6 rounded-2xl border border-dashed border-green-300 dark:border-green-700 bg-green-50/60 dark:bg-green-950/40 px-4 py-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300">
             Consejo: revisá el progreso y vencimientos antes de acreditar.
           </div>
