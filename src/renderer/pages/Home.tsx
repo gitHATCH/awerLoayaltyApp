@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Home: React.FC<Props> = ({ onChangePos, onLoadPoints }) => {
-  const { branches } = useCompany();
+  const { branches, companyLogo, companyName } = useCompany();
   const posId = localStorage.getItem("pos");
   let posName = "Punto de Venta";
   if (posId) {
@@ -23,12 +23,24 @@ const Home: React.FC<Props> = ({ onChangePos, onLoadPoints }) => {
         <div className="relative">
           <div className="h-24 sm:h-28 bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 dark:from-green-700 dark:via-emerald-700 dark:to-green-800" />
           <div className="absolute -bottom-10 left-1/2 -translate-x-1/2">
-            <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-2xl bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 shadow-xl flex items-center justify-center">
-              {/* Ícono POS */}
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-10 w-10 text-green-600 dark:text-green-400">
-                <path d="M3 6.75A2.25 2.25 0 0 1 5.25 4.5h13.5A2.25 2.25 0 0 1 21 6.75v7.5A2.25 2.25 0 0 1 18.75 16.5H5.25A2.25 2.25 0 0 1 3 14.25v-7.5Z" />
-                <path d="M3.75 18.375A1.875 1.875 0 0 1 5.625 16.5h12.75a1.875 1.875 0 0 1 1.875 1.875c0 .414-.336.75-.75.75H4.5a.75.75 0 0 1-.75-.75Z" />
-              </svg>
+            <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-2xl bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 shadow-xl flex items-center justify-center p-1">
+              {companyLogo ? (
+                <img
+                  src={companyLogo.startsWith('http') ? companyLogo : `https:${companyLogo}`}
+                  alt={companyName || 'Logo'}
+                  className="h-full w-full object-contain rounded-xl border border-gray-300 dark:border-gray-600"
+                />
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="h-10 w-10 text-green-600 dark:text-green-400"
+                >
+                  <path d="M3 6.75A2.25 2.25 0 0 1 5.25 4.5h13.5A2.25 2.25 0 0 1 21 6.75v7.5A2.25 2.25 0 0 1 18.75 16.5H5.25A2.25 2.25 0 0 1 3 14.25v-7.5Z" />
+                  <path d="M3.75 18.375A1.875 1.875 0 0 1 5.625 16.5h12.75a1.875 1.875 0 0 1 1.875 1.875c0 .414-.336.75-.75.75H4.5a.75.75 0 0 1-.75-.75Z" />
+                </svg>
+              )}
             </div>
           </div>
         </div>
