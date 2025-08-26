@@ -78,7 +78,11 @@ const App: React.FC = () => {
     init();
   }, []);
 
-  const handleLogged = () => setScreen('login2');
+  const handleLogged = () => {
+    const brand = localStorage.getItem('brand');
+    if (brand) setScreen('home');
+    else setScreen('login2');
+  };
 
   const handleBrand = (brand: Brand) => {
     localStorage.setItem('brand', brand.id);
@@ -87,7 +91,7 @@ const App: React.FC = () => {
     else setScreen('home');
   };
 
-  const handleLogout = () => {
+    const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('brand');
@@ -101,16 +105,11 @@ const App: React.FC = () => {
     setScreen('login1');
   };
 
-  const handleChangeBrand = () => {
-    localStorage.removeItem('brand');
-    setScreen('login2');
-  };
-
-  const handleChangePos = () => setScreen('pos');
+    const handleChangePos = () => setScreen('pos');
   const handleStartPoints = () => setScreen('points1');
 
   const handleSelectPos = (pos: Branch) => {
-    localStorage.setItem('pos', pos.name);
+    localStorage.setItem('pos', String(pos.id));
     setScreen('home');
   };
 
@@ -156,8 +155,13 @@ const App: React.FC = () => {
     />
     );
 
-  return (<div className="h-screen flex flex-col bg-transparent overflow-hidden"> <Header onChangeBrand={handleChangeBrand} onLogout={handleLogout} /> <main className="flex-1 overflow-y-auto brand-scroll">{content}</main> <Footer theme={theme} onToggle={toggleTheme} /> </div>
-  );
+    return (
+      <div className="h-screen flex flex-col bg-transparent overflow-hidden">
+        <Header onLogout={handleLogout} />
+        <main className="flex-1 overflow-y-auto brand-scroll">{content}</main>
+        <Footer theme={theme} onToggle={toggleTheme} />
+      </div>
+    );
 };
 
 export default App;

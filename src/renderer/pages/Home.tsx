@@ -1,4 +1,5 @@
 import React from "react";
+import { useCompany } from "../context/CompanyContext";
 
 interface Props {
   onChangePos: () => void;
@@ -6,8 +7,13 @@ interface Props {
 }
 
 const Home: React.FC<Props> = ({ onChangePos, onLoadPoints }) => {
-  const pos = localStorage.getItem("pos");
-  const posName = pos || "Punto de Venta";
+  const { branches } = useCompany();
+  const posId = localStorage.getItem("pos");
+  let posName = "Punto de Venta";
+  if (posId) {
+    const branch = branches.find((b) => String(b.id) === posId);
+    if (branch) posName = branch.name;
+  }
 
   return (
     <div className="min-h-full w-full flex items-center justify-center px-3 sm:px-6 py-6">
@@ -61,7 +67,7 @@ const Home: React.FC<Props> = ({ onChangePos, onLoadPoints }) => {
             </button>
 
             {/* Cambiar punto de venta */}
-            {!pos && (
+            {!posId && (
               <button
                 onClick={onChangePos}
                 className="group w-full rounded-2xl px-5 py-4 sm:py-5 text-left border border-gray-200 dark:border-gray-700 bg-gray-50 hover:bg-green-50 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white shadow transition-all"
