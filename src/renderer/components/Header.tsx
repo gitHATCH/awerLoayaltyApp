@@ -1,11 +1,10 @@
 import React, { forwardRef } from 'react';
 
 interface Props {
-  onChangeBrand: () => void;
   onLogout: () => void;
 }
 
-const Header = forwardRef<HTMLDivElement, Props>(({ onChangeBrand, onLogout }, ref) => {
+const Header = forwardRef<HTMLDivElement, Props>(({ onLogout }, ref) => {
   const [isDark, setIsDark] = React.useState(false);
 
   React.useEffect(() => {
@@ -29,31 +28,25 @@ const Header = forwardRef<HTMLDivElement, Props>(({ onChangeBrand, onLogout }, r
       ref={ref}
       className="w-full px-4 sm:px-8 py-2 sm:py-3 bg-white dark:bg-gray-900 shadow-md border-b border-green-200 dark:border-gray-700 flex-shrink-0"
     >
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
-        <div className="flex items-center gap-3 max-h-10">
-          <img
-            src={logoSrc}
-            alt="AWER Logo"
-            className={`${logoClass} object-contain drop-shadow-xl transition-all`}
-          />
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
+          <div className="flex items-center gap-3 max-h-10">
+            <img
+              src={logoSrc}
+              alt="AWER Logo"
+              className={`${logoClass} object-contain drop-shadow-xl transition-all`}
+            />
+          </div>
+          <div className="flex gap-2 mt-2 sm:mt-0">
+            <button
+              onClick={onLogout}
+              className="px-4 py-1 sm:px-5 sm:py-2 text-sm sm:text-base rounded-full font-semibold border border-red-500 text-red-600 dark:text-red-400 bg-white dark:bg-gray-900 hover:bg-red-100 dark:hover:bg-red-950 shadow transition-all duration-150"
+            >
+              Cerrar sesión
+            </button>
+          </div>
         </div>
-        <div className="flex gap-2 mt-2 sm:mt-0">
-          <button
-            onClick={onChangeBrand}
-            className="px-4 py-1 sm:px-5 sm:py-2 text-sm sm:text-base rounded-full font-semibold border border-green-500 text-green-600 dark:text-green-400 bg-white dark:bg-gray-900 hover:bg-green-100 dark:hover:bg-green-950 shadow transition-all duration-150"
-          >
-            Cambiar marca
-          </button>
-          <button
-            onClick={onLogout}
-            className="px-4 py-1 sm:px-5 sm:py-2 text-sm sm:text-base rounded-full font-semibold border border-red-500 text-red-600 dark:text-red-400 bg-white dark:bg-gray-900 hover:bg-red-100 dark:hover:bg-red-950 shadow transition-all duration-150"
-          >
-            Cerrar sesión
-          </button>
-        </div>
-      </div>
-    </header>
-  );
-});
+      </header>
+    );
+  });
 
 export default Header;
