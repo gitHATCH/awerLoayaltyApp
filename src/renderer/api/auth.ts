@@ -54,7 +54,7 @@ export interface UserInfo {
 export async function fetchCurrentUser(): Promise<UserInfo> {
   const { data } = await axiosClient.get<{
     companyId: number;
-  }>("/awer-core/users/me");
+  }>("/awer-core/me");
   return { companyId: data.companyId };
 }
 
@@ -70,7 +70,6 @@ export async function fetchBranches(companyId: number): Promise<CompanyData> {
     companyProfile?: { logoFile: string };
     branches: { id: number; name: string }[];
   }>(`/awer-core/companies/${companyId}`);
-  console.log(data)
 
   const branches = data.branches?.map((b) => ({ id: b.id, name: b.name })) || [];
   const companyName = data.name;

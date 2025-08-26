@@ -6,11 +6,14 @@ import PointsStep1 from './pages/PointsStep1';
 import PointsStep2 from './pages/PointsStep2';
 import PointsStepFinal from './pages/PointsStepFinal';
 import PosSelect from './pages/PosSelect';
-import { Brand, Branch, authenticate } from './api/auth';
+
+import { Brand, Branch, fetchCurrentUser, fetchBranches } from './api/auth';
+
 import { UserProfile } from './api/points';
 import Spinner from './components/Spinner';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { useCompany } from './context/CompanyContext';
 
 type Screen = 'loading' | 'login1' | 'login2' | 'home' | 'pos' | 'points1' | 'points2' | 'points3';
 
@@ -28,6 +31,7 @@ const App: React.FC = () => {
   const [added, setAdded] = React.useState(0);
   const [expires, setExpires] = React.useState('');
   const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
+  const { setCompanyId, setCompanyName, setCompanyLogo, setBranches } = useCompany();
 
   React.useEffect(() => {
     const stored = localStorage.getItem('theme') as 'light' | 'dark' | null;
@@ -48,13 +52,17 @@ const App: React.FC = () => {
         setScreen('login1');
         return;
       }
-      const ok = await authenticate();
-        if (!ok) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('refresh_token');
-          setScreen('login1');
-          return;
-        }
+      try {
+        const { companyId } = await fetchCurrentUser();
+        setCompanyId(companyId);
+        const { companyName, companyLogo, branches } = await fetchBranches(companyId);
+        setCompanyName(companyName);
+        setCompanyLogo(companyLogo);
+        setBranches(branches);
+      } catch {
+        handleLogout();
+        return;
+      }
       const brand = localStorage.getItem('brand');
       if (!brand) {
         setScreen('login2');
@@ -83,6 +91,13 @@ const App: React.FC = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('brand');
+
+    localStorage.removeItem('pos');
+    setCompanyId(null);
+    setCompanyName('');
+    setCompanyLogo('');
+    setBranches([]);
+
     setScreen('login1');
   };
 
