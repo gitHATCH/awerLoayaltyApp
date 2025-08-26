@@ -1,7 +1,8 @@
 import React from "react";
 import Toast from "../components/Toast";
 import Spinner from "../components/Spinner";
-import { UserProfile, addPoints } from "../api/points";
+import { UserProfile, addPoints, fetchPointsConfig } from "../api/points";
+import { usePointsConfig } from "../context/PointsConfigContext";
 import userIcon from "../assets/user-default.svg";
 
 interface Props {
@@ -9,8 +10,6 @@ interface Props {
   onBack: () => void;
   onNext: (updated: UserProfile, added: number, expires: string) => void;
 }
-
-const RATE = 10; // 1 punto cada $10
 
 const levelColors: Record<string, string> = {
   BRONZE: "bg-amber-600 text-white",
@@ -20,16 +19,39 @@ const levelColors: Record<string, string> = {
 };
 
 const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
+  const { unitAmount, pointsPerUnit, setUnitAmount, setPointsPerUnit } = usePointsConfig();
   const [amount, setAmount] = React.useState("");
   const [toast, setToast] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
+  const [configLoading, setConfigLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    fetchPointsConfig()
+      .then(({ unitAmount, pointsPerUnit }) => {
+        setUnitAmount(unitAmount);
+        setPointsPerUnit(pointsPerUnit);
+      })
+      .catch((error: any) => {
+        if (error.response?.status !== 401) {
+          setToast('Ocurrió un error');
+          setTimeout(() => {
+            setToast(null);
+            onBack();
+          }, 3000);
+        }
+      })
+      .finally(() => setConfigLoading(false));
+  }, [onBack, setUnitAmount, setPointsPerUnit]);
 
   const valueNum = parseFloat(amount) || 0;
-  const points = Math.floor(valueNum / RATE);
+  const points =
+    unitAmount && pointsPerUnit
+      ? Math.floor((valueNum * pointsPerUnit) / unitAmount)
+      : 0;
 
   const handleNext = () => {
     const value = parseFloat(amount);
-    if (isNaN(value) || value < RATE) {
+    if (isNaN(value) || points <= 0) {
       setToast(`El monto es muy pequeño`);
       setTimeout(() => setToast(null), 3000);
       return;
@@ -51,7 +73,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
       )
       : 100;
 
-  if (loading)
+  if (loading || configLoading)
     return (
       <div className="min-h-full flex items-center justify-center px-4 py-10">
         <div className="w-full max-w-md bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 rounded-3xl shadow-2xl p-8 text-center">
@@ -164,7 +186,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
           {/* Tasa y formulario */}
           <div>
             <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-2">
-              Ganás <b>1 punto</b> por cada <b>${RATE}</b>
+              Ganás <b>{pointsPerUnit ?? 0} punto{pointsPerUnit === 1 ? '' : 's'}</b> por cada <b>${unitAmount ?? 0}</b>
             </p>
 
             {/* GRID: col1 (input fila 1 + badge fila 2), col2 (botón) */}
@@ -190,7 +212,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
               {/* Botón (fila 1, col 2) — alineado con el input */}
               <button
                 onClick={handleNext}
-                disabled={valueNum < RATE}
+                disabled={points <= 0}
                 className="sm:col-start-2 sm:row-start-1 w-full sm:w-auto px-6 sm:px-10 h-[48px] sm:h-[52px] rounded-full font-extrabold text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 shadow-lg transition"
               >
                 Sumar mis puntos
@@ -198,7 +220,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
 
               {/* Badge (fila 2, col 1) — debajo del input, no afecta alineación del botón */}
               <div className="sm:col-start-1 sm:row-start-2 min-h-[1.5rem]" aria-live="polite">
-                {valueNum >= RATE && (
+                {points > 0 && (
                   <span className="mt-1 inline-flex items-center gap-1 px-2 py-1 rounded-full border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-950/40 text-xs sm:text-sm text-green-700 dark:text-green-300">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
                       <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm1 14-3-3h2V8h2v5h2Z" />

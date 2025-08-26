@@ -14,6 +14,11 @@ export interface UserProfile {
   expiring?: { points: number; date: string };
 }
 
+export interface PointsConfig {
+  unitAmount: number | null;
+  pointsPerUnit: number | null;
+}
+
 const mockUsers: UserProfile[] = [
   {
     id: '1',
@@ -70,6 +75,17 @@ const mockUsers: UserProfile[] = [
 let currentUser: UserProfile = mockUsers[0];
 
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
+export async function fetchPointsConfig(): Promise<PointsConfig> {
+  const { data } = await axiosClient.get<{
+    unitAmount?: number | null;
+    pointsPerUnit?: number | null;
+  }>("/awer-core/reward/config");
+  return {
+    unitAmount: data.unitAmount ?? null,
+    pointsPerUnit: data.pointsPerUnit ?? null,
+  };
+}
 
 export async function searchUsers(query: string): Promise<string[]> {
   // TODO: return (await axiosClient.get<string[]>('/users/search', { params: { q: query } })).data;
