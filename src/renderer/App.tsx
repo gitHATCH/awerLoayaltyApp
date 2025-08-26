@@ -6,7 +6,7 @@ import PointsStep1 from './pages/PointsStep1';
 import PointsStep2 from './pages/PointsStep2';
 import PointsStepFinal from './pages/PointsStepFinal';
 import PosSelect from './pages/PosSelect';
-import { Brand, Pos, authenticate } from './api/auth';
+import { Brand, Branch, authenticate } from './api/auth';
 import { UserProfile } from './api/points';
 import Spinner from './components/Spinner';
 import Header from './components/Header';
@@ -83,7 +83,6 @@ const App: React.FC = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('brand');
-    localStorage.removeItem('companyId');
     setScreen('login1');
   };
 
@@ -95,7 +94,7 @@ const App: React.FC = () => {
   const handleChangePos = () => setScreen('pos');
   const handleStartPoints = () => setScreen('points1');
 
-  const handleSelectPos = (pos: Pos) => {
+  const handleSelectPos = (pos: Branch) => {
     localStorage.setItem('pos', pos.name);
     setScreen('home');
   };
