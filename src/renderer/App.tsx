@@ -63,11 +63,6 @@ const App: React.FC = () => {
         handleLogout();
         return;
       }
-      const brand = localStorage.getItem('brand');
-      if (!brand) {
-        setScreen('login2');
-        return;
-      }
       const stored = localStorage.getItem('pos');
       if (!stored) {
         setScreen('pos');
@@ -79,11 +74,6 @@ const App: React.FC = () => {
   }, []);
 
   const handleLogged = () => {
-    const brand = localStorage.getItem('brand');
-    if (!brand) {
-      setScreen('login2');
-      return;
-    }
     const stored = localStorage.getItem('pos');
     if (!stored) setScreen('pos');
     else setScreen('home');
