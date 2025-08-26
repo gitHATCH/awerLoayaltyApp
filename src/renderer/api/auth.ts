@@ -43,15 +43,14 @@ export async function login(username: string, password: string): Promise<AuthRes
 }
 
 export interface UserInfo {
-  companyId: string;
+  companyId: number;
 }
 
 export async function fetchCurrentUser(): Promise<UserInfo> {
-  const { data } = await axiosClient.get<string>('/awer-core/users/me', { responseType: 'text' });
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(data, 'application/xml');
-  const companyId = xmlDoc.querySelector('companyId')?.textContent ?? '';
-  return { companyId };
+  const { data } = await axiosClient.get<{
+    companyId: number;
+  }>("/awer-core/users/me");
+  return { companyId: data.companyId };
 }
 
 export async function authenticate(): Promise<boolean> {

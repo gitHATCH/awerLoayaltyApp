@@ -32,7 +32,7 @@ const LoginUser: React.FC<Props> = ({ onLogin }) => {
       localStorage.setItem('token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
       const { companyId } = await fetchCurrentUser();
-      if (companyId) localStorage.setItem('companyId', companyId);
+      if (companyId) localStorage.setItem('companyId', companyId.toString());
       onLogin();
     } catch {
       localStorage.removeItem('token');
