@@ -90,9 +90,6 @@ const App: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('refresh_token');
-    localStorage.removeItem('brand');
-
-    localStorage.removeItem('pos');
     setCompanyId(null);
     setCompanyName('');
     setCompanyLogo('');

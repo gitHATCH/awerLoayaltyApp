@@ -20,6 +20,11 @@ export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [companyLogo, setCompanyLogo] = React.useState('');
   const [branches, setBranches] = React.useState<Branch[]>([]);
 
+  console.log(companyId)
+  console.log(companyName)
+  console.log(companyLogo)
+  console.log(branches)
+
   return (
     <CompanyContext.Provider value={{ companyId, companyName, companyLogo, branches, setCompanyId, setCompanyName, setCompanyLogo, setBranches }}>
       {children}
