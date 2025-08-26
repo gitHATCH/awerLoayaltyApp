@@ -80,8 +80,13 @@ const App: React.FC = () => {
 
   const handleLogged = () => {
     const brand = localStorage.getItem('brand');
-    if (brand) setScreen('home');
-    else setScreen('login2');
+    if (!brand) {
+      setScreen('login2');
+      return;
+    }
+    const stored = localStorage.getItem('pos');
+    if (!stored) setScreen('pos');
+    else setScreen('home');
   };
 
   const handleBrand = (brand: Brand) => {
