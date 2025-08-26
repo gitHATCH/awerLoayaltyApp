@@ -96,11 +96,3 @@ export async function fetchBrands(): Promise<Brand[]> {
   ];
 }
 
-export async function fetchPos(brandId: string): Promise<Pos[]> {
-  // TODO: return (await axiosClient.get<Pos[]>(`/brands/${brandId}/pos`)).data;
-  await delay(500);
-  return Array.from({ length: 20 }).map((_, i) => ({
-    id: `${brandId}-pos-${i + 1}`,
-    name: `Sucursal ${i + 1}`,
-  }));
-}

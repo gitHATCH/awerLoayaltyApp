@@ -113,6 +113,7 @@ export async function addPoints(amount: number): Promise<{ profile: UserProfile;
   await delay(500);
   const rate = 10;
   const added = Math.floor(amount / rate);
+  if(!currentUser) return {profile: {id:"1",name:"",level:"",nextLevel:"",pointsToNext:2424, email: "", dni: "", points:12, totalRedeemed:12}, added, expires: '2025-12-31'}
   currentUser.points += added;
   currentUser.pointsToNext -= added;
   if (currentUser.pointsToNext <= 0) {
