@@ -1,6 +1,7 @@
 import React from "react";
 import Toast from "../components/Toast";
 import Spinner from "../components/Spinner";
+import Tooltip from "../components/Tooltip";
 import { UserProfile, addPoints, fetchPointsConfig } from "../api/points";
 import { usePointsConfig } from "../context/PointsConfigContext";
 import userIcon from "../assets/user-default.svg";
@@ -187,15 +188,16 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
           {/* Tasa y formulario */}
           <div>
             {configInvalid && (
-              <div className="mb-4 flex items-start justify-between rounded-xl border border-yellow-300 bg-yellow-50 p-4 text-yellow-800">
+              <div className="mb-4 flex items-start justify-between rounded-xl border border-yellow-300 bg-yellow-50 p-4 text-yellow-800 dark:border-yellow-600 dark:bg-yellow-900/40 dark:text-yellow-200">
                 <p className="text-sm">Su empresa no configuró la cantidad de puntos a otorgar por cada monto.</p>
-                <button
-                  type="button"
-                  className="ml-4 flex h-6 w-6 items-center justify-center rounded-full border border-yellow-400 text-xs font-bold"
-                  title="Para eso la empresa debe ingresar a https://gestion.awerreviews.com. Dirigirse a Fidelización en el slide de la izquierda y seleccionar Awer Loyalty. Allí al apartado Niveles y acciones y configurar allí"
-                >
-                  ?
-                </button>
+                <Tooltip message="Para eso la empresa debe ingresar a https://gestion.awerreviews.com. Dirigirse a Fidelización en el slide de la izquierda y seleccionar Awer Loyalty. Allí al apartado Niveles y acciones y configurar allí">
+                  <button
+                    type="button"
+                    className="ml-4 flex h-6 w-6 items-center justify-center rounded-full border border-yellow-400 text-xs font-bold text-yellow-700 dark:border-yellow-600 dark:text-yellow-200"
+                  >
+                    ?
+                  </button>
+                </Tooltip>
               </div>
             )}
             <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-2">
