@@ -1,7 +1,11 @@
 import React from "react";
 import Toast from "../components/Toast";
 import Spinner from "../components/Spinner";
-import { fetchUser, fetchEmailsByDni, UserProfile } from "../api/points";
+import {
+  fetchUsersByDni,
+  fetchUserByDniEmail,
+  UserProfile,
+} from "../api/points";
 
 interface Props {
   onBack: () => void;
@@ -22,14 +26,14 @@ const PointsStep1: React.FC<Props> = ({ onBack, onNext }) => {
   const handleSearch = () => {
     if (!dni) return;
     setLoading(true);
-    fetchEmailsByDni(dni)
+    fetchUsersByDni(dni)
       .then((res) => {
         if (res.length === 0) {
           showError("DNI no encontrado");
         } else if (res.length === 1) {
-          return fetchUser(res[0]).then(onNext);
+          onNext(res[0]);
         } else {
-          setEmails(res);
+          setEmails(res.map((u) => u.email));
         }
       })
       .catch((e) => showError(e.message))
@@ -38,7 +42,7 @@ const PointsStep1: React.FC<Props> = ({ onBack, onNext }) => {
 
   const handleSelectEmail = (email: string) => {
     setLoading(true);
-    fetchUser(email)
+    fetchUserByDniEmail(dni, email)
       .then(onNext)
       .catch((e) => showError(e.message))
       .finally(() => setLoading(false));

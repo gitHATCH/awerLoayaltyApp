@@ -19,62 +19,9 @@ export interface PointsConfig {
   pointsPerUnit: number | null;
 }
 
-const mockUsers: UserProfile[] = [
-  {
-    id: '1',
-    name: 'Alejandro',
-    email: 'alejandro@example.com',
-    dni: '12345678',
-    avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
-    points: 1200,
-    level: 'SILVER',
-    nextLevel: 'GOLD',
-    pointsToNext: 300,
-    totalRedeemed: 3400,
-    expiring: { points: 100, date: '2024-12-31' },
-  },
-  {
-    id: '4',
-    name: 'Alejandro',
-    email: 'alejandro2@example.com',
-    dni: '12345678',
-    avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
-    points: 1200,
-    level: 'SILVER',
-    nextLevel: 'GOLD',
-    pointsToNext: 300,
-    totalRedeemed: 3400,
-    expiring: { points: 100, date: '2024-12-31' },
-  },
-  {
-    id: '2',
-    name: 'Beatriz',
-    email: 'beatriz@example.com',
-    dni: '23456789',
-    avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
-    points: 800,
-    level: 'BRONZE',
-    nextLevel: 'SILVER',
-    pointsToNext: 200,
-    totalRedeemed: 1500,
-  },
-  {
-    id: '3',
-    name: 'Carlos',
-    email: 'carlos@example.com',
-    dni: '34567890',
-    points: 2000,
-    level: 'GOLD',
-    nextLevel: 'PLATINUM',
-    pointsToNext: 500,
-    totalRedeemed: 5000,
-    expiring: { points: 50, date: '2024-10-31' },
-  },
-];
+let currentUser: UserProfile | null = null;
 
-let currentUser: UserProfile = mockUsers[0];
-
-const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export async function fetchPointsConfig(): Promise<PointsConfig> {
   const { data } = await axiosClient.get<{
@@ -87,25 +34,56 @@ export async function fetchPointsConfig(): Promise<PointsConfig> {
   };
 }
 
-export async function searchUsers(query: string): Promise<string[]> {
-  // TODO: return (await axiosClient.get<string[]>('/users/search', { params: { q: query } })).data;
-  await delay(200);
-  return mockUsers.map(u => u.email).filter(e => e.includes(query));
+interface ApiUser {
+  name: string;
+  surname: string;
+  dni: string | null;
+  pointsToNextLevel: number;
+  nextLevel: string;
+  userPoints: number;
+  userLevel: string;
+  email: string;
 }
 
-export async function fetchEmailsByDni(dni: string): Promise<string[]> {
-  // TODO: return (await axiosClient.get<string[]>(`/users/dni/${dni}`)).data;
-  await delay(300);
-  return mockUsers.filter(u => u.dni === dni).map(u => u.email);
+function mapUser(u: ApiUser): UserProfile {
+  return {
+    id: `${u.dni ?? ''}-${u.email}`,
+    name: `${u.name} ${u.surname}`.trim(),
+    email: u.email,
+    dni: u.dni ?? '',
+    points: u.userPoints,
+    level: u.userLevel,
+    nextLevel: u.nextLevel,
+    pointsToNext: u.pointsToNextLevel,
+    totalRedeemed: 0,
+  };
 }
 
-export async function fetchUser(email: string): Promise<UserProfile> {
-  // TODO: return (await axiosClient.get<UserProfile>(`/users/${email}`)).data;
-  await delay(500);
-  const user = mockUsers.find(u => u.email === email);
+export async function fetchUsersByDni(dni: string): Promise<UserProfile[]> {
+  const { data } = await axiosClient.get<ApiUser[]>(
+    '/awer-core/reward/ext/user',
+    { params: { dni } }
+  );
+  const profiles = data.map(mapUser);
+  if (profiles.length === 1) {
+    currentUser = profiles[0];
+  }
+  return profiles;
+}
+
+export async function fetchUserByDniEmail(
+  dni: string,
+  email: string
+): Promise<UserProfile> {
+  const { data } = await axiosClient.get<ApiUser[]>(
+    '/awer-core/reward/ext/user',
+    { params: { dni, email } }
+  );
+  const user = data[0];
   if (!user) throw new Error('Usuario no registrado en el programa de puntos');
-  currentUser = { ...user };
-  return currentUser;
+  const profile = mapUser(user);
+  currentUser = profile;
+  return profile;
 }
 
 export async function addPoints(amount: number): Promise<{ profile: UserProfile; added: number; expires: string }> {
