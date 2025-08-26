@@ -79,6 +79,7 @@ const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onC
             <div className="flex items-start gap-4">
               <img
                 src={profile.avatar || userIcon}
+                onError={(e) => (e.currentTarget.src = userIcon)}
                 alt={profile.name}
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-green-400 dark:border-green-600 object-cover bg-white dark:bg-gray-800 flex-shrink-0"
               />
@@ -134,9 +135,9 @@ const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onC
             </div>
 
             {/* Vencimientos (si existen) */}
-            {profile.expiring && (
+            {profile.expiringPoints !== undefined && (
               <div className="mt-3 text-center text-xs sm:text-sm text-red-600 dark:text-red-400">
-                Próximos a vencer: <b>{profile.expiring.points}</b> pts el <b>{profile.expiring.date}</b>
+                Próximos a vencer: <b>{profile.expiringPoints}</b> pts
               </div>
             )}
           </div>

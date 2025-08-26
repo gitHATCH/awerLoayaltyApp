@@ -11,7 +11,7 @@ export interface UserProfile {
   nextLevel: string;
   pointsToNext: number;
   totalRedeemed: number;
-  expiring?: { points: number; date: string };
+  expiringPoints?: number;
 }
 
 export interface PointsConfig {
@@ -41,21 +41,37 @@ interface ApiUser {
   pointsToNextLevel: number;
   nextLevel: string;
   userPoints: number;
+  availablePoints?: number;
   userLevel: string;
   email: string;
+  avatar?: string | null;
+  pointsToExpire?: number | null;
+  expireDate?: [number, number, number] | null;
+  totalRedeemedPoints: number;
 }
 
 function mapUser(u: ApiUser): UserProfile {
+  let expiringPoints: number | undefined;
+  if (u.pointsToExpire && u.expireDate) {
+    const [y, m, d] = u.expireDate;
+    const expiration = new Date(y, m - 1, d);
+    const diffDays = Math.ceil(
+      (expiration.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+    );
+    if (diffDays < 4) expiringPoints = u.pointsToExpire;
+  }
   return {
     id: `${u.dni ?? ''}-${u.email}`,
     name: `${u.name} ${u.surname}`.trim(),
     email: u.email,
     dni: u.dni ?? '',
-    points: u.userPoints,
+    avatar: u.avatar ?? undefined,
+    points: u.availablePoints ?? u.userPoints,
     level: u.userLevel,
     nextLevel: u.nextLevel,
     pointsToNext: u.pointsToNextLevel,
-    totalRedeemed: 0,
+    totalRedeemed: u.totalRedeemedPoints,
+    expiringPoints,
   };
 }
 
