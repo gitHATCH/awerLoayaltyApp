@@ -1,7 +1,8 @@
 import React from 'react';
-import { login, fetchCurrentUser } from '../api/auth';
+import { login, fetchCurrentUser, fetchBranches } from '../api/auth';
 import Spinner from '../components/Spinner';
 import Toast from '../components/Toast';
+import { useCompany } from '../context/CompanyContext';
 
 interface Props {
   onLogin: () => void;
@@ -13,6 +14,7 @@ const LoginUser: React.FC<Props> = ({ onLogin }) => {
   const [loading, setLoading] = React.useState(false);
   const [isDark, setIsDark] = React.useState(false);
   const [toast, setToast] = React.useState<string | null>(null);
+  const { setCompanyId, setCompanyName, setCompanyLogo, setBranches } = useCompany();
 
   React.useEffect(() => {
     const html = document.documentElement;
@@ -32,7 +34,11 @@ const LoginUser: React.FC<Props> = ({ onLogin }) => {
       localStorage.setItem('token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
       const { companyId } = await fetchCurrentUser();
-      if (companyId) localStorage.setItem('companyId', companyId.toString());
+      setCompanyId(companyId);
+      const { companyName, companyLogo, branches } = await fetchBranches(companyId);
+      setCompanyName(companyName);
+      setCompanyLogo(companyLogo);
+      setBranches(branches);
       onLogin();
     } catch {
       localStorage.removeItem('token');

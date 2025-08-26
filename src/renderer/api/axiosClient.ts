@@ -22,7 +22,6 @@ axiosClient.interceptors.response.use(
       localStorage.removeItem('token');
       localStorage.removeItem('refresh_token');
       localStorage.removeItem('brand');
-      localStorage.removeItem('companyId');
       window.location.reload();
     }
     return Promise.reject(error);

@@ -11,6 +11,11 @@ export interface Pos {
   name: string;
 }
 
+export interface Branch {
+  id: number;
+  name: string;
+}
+
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 export interface AuthResponse {
@@ -49,8 +54,28 @@ export interface UserInfo {
 export async function fetchCurrentUser(): Promise<UserInfo> {
   const { data } = await axiosClient.get<{
     companyId: number;
-  }>("/awer-core/users/me");
+  }>("/awer-core/me");
   return { companyId: data.companyId };
+}
+
+export interface CompanyData {
+  companyName: string;
+  companyLogo: string;
+  branches: Branch[];
+}
+
+export async function fetchBranches(companyId: number): Promise<CompanyData> {
+  const { data } = await axiosClient.get<{
+    name: string;
+    companyProfile?: { logoFile: string };
+    branches: { id: number; name: string }[];
+  }>(`/awer-core/companies/${companyId}`);
+
+  const branches = data.branches?.map((b) => ({ id: b.id, name: b.name })) || [];
+  const companyName = data.name;
+  const companyLogo = data.companyProfile?.logoFile || '';
+
+  return { companyName, companyLogo, branches };
 }
 
 export async function authenticate(): Promise<boolean> {

@@ -1,30 +1,19 @@
 import React from "react";
-import { Pos, fetchPos } from "../api/auth";
+import { Branch } from "../api/auth";
 import Spinner from "../components/Spinner";
+import { useCompany } from "../context/CompanyContext";
 
 interface Props {
-  onSelect: (pos: Pos) => void;
+  onSelect: (pos: Branch) => void;
   onCancel: () => void;
 }
 
 const PosSelect: React.FC<Props> = ({ onSelect, onCancel }) => {
-  const [poses, setPoses] = React.useState<Pos[]>([]);
+  const { branches } = useCompany();
   const [search, setSearch] = React.useState("");
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
   const [highlight, setHighlight] = React.useState<number>(-1);
 
-  React.useEffect(() => {
-    const brand = localStorage.getItem("brand") || "";
-    setLoading(true);
-    setError(null);
-    fetchPos(brand)
-      .then((p) => setPoses(p))
-      .catch(() =>
-        setError("No pudimos cargar los puntos de venta. Intenta nuevamente.")
-      )
-      .finally(() => setLoading(false));
-  }, []);
+  const poses = branches;
 
   // ESC para volver rápido
   React.useEffect(() => {
@@ -55,7 +44,7 @@ const PosSelect: React.FC<Props> = ({ onSelect, onCancel }) => {
     }
   };
 
-  if (loading)
+  if (!poses.length)
     return (
       <div className="min-h-full flex items-center justify-center px-4 py-10">
         <div className="w-full max-w-md bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 rounded-3xl shadow-2xl p-8 text-center">
@@ -153,12 +142,6 @@ const PosSelect: React.FC<Props> = ({ onSelect, onCancel }) => {
           </div>
 
           {/* Estado de error */}
-          {error && (
-            <div className="mb-4 rounded-2xl border border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-950/40 px-4 py-3 text-sm text-red-700 dark:text-red-300">
-              {error}
-            </div>
-          )}
-
           {/* Lista de POS con scroll personalizado */}
           <div
             role="listbox"
