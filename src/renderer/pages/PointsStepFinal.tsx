@@ -135,9 +135,9 @@ const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onC
             </div>
 
             {/* Vencimientos (si existen) */}
-            {profile.expiringPoints !== undefined && (
+            {profile.expiringPoints !== undefined && profile.expiringDate && (
               <div className="mt-3 text-center text-xs sm:text-sm text-red-600 dark:text-red-400">
-                Próximos a vencer: <b>{profile.expiringPoints}</b> pts
+                Próximos a vencer: <b>{profile.expiringPoints}</b> pts - {profile.expiringDate}
               </div>
             )}
           </div>
