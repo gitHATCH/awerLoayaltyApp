@@ -91,12 +91,10 @@ const App: React.FC = () => {
     else setScreen('home');
   };
 
-    const handleLogout = () => {
+  const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('refresh_token');
-    localStorage.removeItem('brand');
 
-    localStorage.removeItem('pos');
     setCompanyId(null);
     setCompanyName('');
     setCompanyLogo('');
@@ -105,7 +103,7 @@ const App: React.FC = () => {
     setScreen('login1');
   };
 
-    const handleChangePos = () => setScreen('pos');
+  const handleChangePos = () => setScreen('pos');
   const handleStartPoints = () => setScreen('points1');
 
   const handleSelectPos = (pos: Branch) => {
@@ -155,13 +153,13 @@ const App: React.FC = () => {
     />
     );
 
-    return (
-      <div className="h-screen flex flex-col bg-transparent overflow-hidden">
-        <Header onLogout={handleLogout} />
-        <main className="flex-1 overflow-y-auto brand-scroll">{content}</main>
-        <Footer theme={theme} onToggle={toggleTheme} />
-      </div>
-    );
+  return (
+    <div className="h-screen flex flex-col bg-transparent overflow-hidden">
+      <Header onLogout={handleLogout} />
+      <main className="flex-1 overflow-y-auto brand-scroll">{content}</main>
+      <Footer theme={theme} onToggle={toggleTheme} />
+    </div>
+  );
 };
 
 export default App;

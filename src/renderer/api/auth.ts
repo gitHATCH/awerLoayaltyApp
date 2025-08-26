@@ -54,7 +54,7 @@ export interface UserInfo {
 export async function fetchCurrentUser(): Promise<UserInfo> {
   const { data } = await axiosClient.get<{
     companyId: number;
-  }>("/awer-core/me");
+  }>("/awer-core/users/me");
   return { companyId: data.companyId };
 }
 
