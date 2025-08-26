@@ -6,7 +6,9 @@ import PointsStep1 from './pages/PointsStep1';
 import PointsStep2 from './pages/PointsStep2';
 import PointsStepFinal from './pages/PointsStepFinal';
 import PosSelect from './pages/PosSelect';
+
 import { Brand, Branch, fetchCurrentUser, fetchBranches } from './api/auth';
+
 import { UserProfile } from './api/points';
 import Spinner from './components/Spinner';
 import Header from './components/Header';
@@ -89,11 +91,13 @@ const App: React.FC = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('brand');
+
     localStorage.removeItem('pos');
     setCompanyId(null);
     setCompanyName('');
     setCompanyLogo('');
     setBranches([]);
+
     setScreen('login1');
   };
 
