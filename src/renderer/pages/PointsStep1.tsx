@@ -95,7 +95,7 @@ const PointsStep1: React.FC<Props> = ({ onBack, onNext }) => {
 
   return (
     <div className="min-h-full w-full flex items-center justify-center px-3 sm:px-6 py-6">
-      <div className="w-full max-w-3xl bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 rounded-3xl shadow-2xl overflow-hidden animate-fade-in relative">
+      <div className="w-full max-w-3xl bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 rounded-3xl shadow-2xl animate-fade-in relative overflow-visible">
         <div className="relative">
           <button
             onClick={onBack}
