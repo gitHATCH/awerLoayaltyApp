@@ -1,11 +1,14 @@
 import React from "react";
 import Toast from "../components/Toast";
 import Spinner from "../components/Spinner";
+import Tooltip from "../components/Tooltip";
 import {
   fetchUsersByDni,
   fetchUserByDniEmail,
+  fetchPointsConfig,
   UserProfile,
 } from "../api/points";
+import { usePointsConfig } from "../context/PointsConfigContext";
 
 interface Props {
   onBack: () => void;
@@ -17,6 +20,28 @@ const PointsStep1: React.FC<Props> = ({ onBack, onNext }) => {
   const [emails, setEmails] = React.useState<string[]>([]);
   const [toast, setToast] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
+  const { unitAmount, pointsPerUnit, setUnitAmount, setPointsPerUnit } = usePointsConfig();
+  const [configLoading, setConfigLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    fetchPointsConfig()
+      .then(({ unitAmount, pointsPerUnit }) => {
+        setUnitAmount(unitAmount);
+        setPointsPerUnit(pointsPerUnit);
+      })
+      .catch((error: any) => {
+        if (error.response?.status !== 401) {
+          setToast("Ocurrió un error");
+          setTimeout(() => {
+            setToast(null);
+            onBack();
+          }, 3000);
+        }
+      })
+      .finally(() => setConfigLoading(false));
+  }, [onBack, setUnitAmount, setPointsPerUnit]);
+
+  const configInvalid = !unitAmount || !pointsPerUnit;
 
   const showError = (msg: string) => {
     setToast(msg);
@@ -58,6 +83,16 @@ const PointsStep1: React.FC<Props> = ({ onBack, onNext }) => {
       </div>
     );
 
+  if (configLoading)
+    return (
+      <div className="min-h-full flex items-center justify-center px-4 py-10">
+        <div className="w-full max-w-md bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 rounded-3xl shadow-2xl p-8 text-center">
+          <Spinner />
+          <p className="mt-3 text-sm text-gray-600 dark:text-gray-300">Procesando…</p>
+        </div>
+      </div>
+    );
+
   return (
     <div className="min-h-full w-full flex items-center justify-center px-3 sm:px-6 py-6">
       <div className="w-full max-w-3xl bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 rounded-3xl shadow-2xl overflow-hidden animate-fade-in relative">
@@ -88,6 +123,20 @@ const PointsStep1: React.FC<Props> = ({ onBack, onNext }) => {
             <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-gray-900 dark:text-white">Cargar datos del usuario</h1>
             <p className="mt-1 text-sm sm:text-base text-gray-600 dark:text-gray-300">Ingresá el DNI del cliente para continuar</p>
           </div>
+
+          {configInvalid && (
+            <div className="mb-4 flex items-start justify-between rounded-xl border border-yellow-300 bg-yellow-50 p-4 text-yellow-800 dark:border-yellow-600 dark:bg-yellow-900/40 dark:text-yellow-200">
+              <p className="text-sm">Su empresa no configuró la cantidad de puntos a otorgar por cada monto.</p>
+              <Tooltip message="Para eso la empresa debe ingresar a https://gestion.awerreviews.com. Dirigirse a Fidelización en el slide de la izquierda y seleccionar Awer Loyalty. Allí al apartado Niveles y acciones y configurar allí">
+                <button
+                  type="button"
+                  className="ml-4 flex h-6 w-6 items-center justify-center rounded-full border border-yellow-400 text-xs font-bold text-yellow-700 dark:border-yellow-600 dark:text-yellow-200"
+                >
+                  ?
+                </button>
+              </Tooltip>
+            </div>
+          )}
 
           <div className="w-full">
             <input

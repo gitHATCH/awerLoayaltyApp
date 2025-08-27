@@ -2,7 +2,7 @@ import React from "react";
 import Toast from "../components/Toast";
 import Spinner from "../components/Spinner";
 import Tooltip from "../components/Tooltip";
-import { UserProfile, addPoints, fetchPointsConfig } from "../api/points";
+import { UserProfile, addPoints } from "../api/points";
 import { usePointsConfig } from "../context/PointsConfigContext";
 import userIcon from "../assets/user-default.svg";
 
@@ -20,29 +20,11 @@ const levelColors: Record<string, string> = {
 };
 
 const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
-  const { unitAmount, pointsPerUnit, setUnitAmount, setPointsPerUnit } = usePointsConfig();
+  const { unitAmount, pointsPerUnit } = usePointsConfig();
   const [amount, setAmount] = React.useState("");
   const [toast, setToast] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
-  const [configLoading, setConfigLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    fetchPointsConfig()
-      .then(({ unitAmount, pointsPerUnit }) => {
-        setUnitAmount(unitAmount);
-        setPointsPerUnit(pointsPerUnit);
-      })
-      .catch((error: any) => {
-        if (error.response?.status !== 401) {
-          setToast('Ocurrió un error');
-          setTimeout(() => {
-            setToast(null);
-            onBack();
-          }, 3000);
-        }
-      })
-      .finally(() => setConfigLoading(false));
-  }, [onBack, setUnitAmount, setPointsPerUnit]);
+  const configLoading = unitAmount === null || pointsPerUnit === null;
 
   const valueNum = parseFloat(amount) || 0;
   const points =
