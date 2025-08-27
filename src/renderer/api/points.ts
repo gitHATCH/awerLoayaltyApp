@@ -69,7 +69,7 @@ function mapUser(u: ApiUser): UserProfile {
     email: u.email,
     dni: u.dni ?? '',
     avatar: u.avatar ?? undefined,
-    points: u.availablePoints ?? u.userPoints,
+    points: u.userPoints,
     level: u.userLevel,
     nextLevel: u.nextLevel,
     pointsToNext: u.pointsToNextLevel,
