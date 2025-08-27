@@ -122,6 +122,9 @@ export async function addPoints(amount: number): Promise<{ profile: UserProfile;
     '/awer-core/reward/ext/purchase-points',
     amount,
     {
+      headers: {
+        'Content-Type': 'application/json',
+      },
       params: {
         branchId,
         dni: currentUser.dni,
