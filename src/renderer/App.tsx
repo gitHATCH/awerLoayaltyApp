@@ -139,7 +139,14 @@ const App: React.FC = () => {
   else if (screen === 'points1')
     content = <PointsStep1 onBack={handleBackPoints1} onNext={handlePointsNext1} />;
   else if (screen === 'points2' && profile)
-    content = <PointsStep2 profile={profile} onBack={handleBackPoints2} onNext={handlePointsNext2} />;
+    content = (
+      <PointsStep2
+        profile={profile}
+        onBack={handleBackPoints2}
+        onNext={handlePointsNext2}
+        onError={handleBackPoints1}
+      />
+    );
   else if (screen === 'points3' && profile)
     content = (<PointsStepFinal
       profile={profile}

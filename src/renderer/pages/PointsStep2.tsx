@@ -10,6 +10,7 @@ interface Props {
   profile: UserProfile;
   onBack: () => void;
   onNext: (updated: UserProfile, added: number, expires: string) => void;
+  onError: () => void;
 }
 
 const levelColors: Record<string, string> = {
@@ -19,7 +20,7 @@ const levelColors: Record<string, string> = {
   PLATINUM: "bg-gray-400 text-gray-900",
 };
 
-const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
+const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
   const { unitAmount, pointsPerUnit } = usePointsConfig();
   const [amount, setAmount] = React.useState("");
   const [toast, setToast] = React.useState<string | null>(null);
@@ -43,6 +44,15 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
     setLoading(true);
     addPoints(value)
       .then(({ profile: p, added, expires }) => onNext(p, added, expires))
+      .catch((error: any) => {
+        if (error.response?.status !== 401) {
+          setToast("Ocurrió un error");
+          setTimeout(() => {
+            setToast(null);
+            onError();
+          }, 3000);
+        }
+      })
       .finally(() => setLoading(false));
   };
 

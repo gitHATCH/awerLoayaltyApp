@@ -22,8 +22,6 @@ export interface PointsConfig {
 
 let currentUser: UserProfile | null = null;
 
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
-
 export async function fetchPointsConfig(): Promise<PointsConfig> {
   const { data } = await axiosClient.get<{
     unitAmount?: number | null;
@@ -109,17 +107,34 @@ export async function fetchUserByDniEmail(
 }
 
 export async function addPoints(amount: number): Promise<{ profile: UserProfile; added: number; expires: string }> {
-  // TODO: const { data } = await axiosClient.post('/points', { amount });
-  await delay(500);
-  const rate = 10;
-  const added = Math.floor(amount / rate);
-  if(!currentUser) return {profile: {id:"1",name:"",level:"",nextLevel:"",pointsToNext:2424, email: "", dni: "", points:12, totalRedeemed:12}, added, expires: '2025-12-31'}
-  currentUser.points += added;
-  currentUser.pointsToNext -= added;
-  if (currentUser.pointsToNext <= 0) {
-    currentUser.level = currentUser.nextLevel;
-    currentUser.nextLevel = 'PLATINUM';
-    currentUser.pointsToNext = 500;
+  if (!currentUser) {
+    throw new Error('Usuario no cargado');
   }
-  return { profile: currentUser, added, expires: '2025-12-31' };
+
+  const branchId = localStorage.getItem('pos');
+  if (!branchId) {
+    throw new Error('INVALID_POS');
+  }
+
+  const prevPoints = currentUser.points;
+
+  const { data } = await axiosClient.post<ApiUser>(
+    '/awer-core/reward/ext/purchase-points',
+    amount,
+    {
+      params: {
+        branchId,
+        dni: currentUser.dni,
+      },
+    },
+  );
+
+  const profile = mapUser(data);
+  const added = profile.points - prevPoints;
+  const expires = data.expireDate
+    ? `${String(data.expireDate[2]).padStart(2, '0')}/${String(data.expireDate[1]).padStart(2, '0')}/${data.expireDate[0]}`
+    : '';
+
+  currentUser = profile;
+  return { profile, added, expires };
 }
