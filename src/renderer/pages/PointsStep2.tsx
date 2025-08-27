@@ -172,8 +172,10 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext }) => {
           <div>
             {configInvalid && (
               <div className="mb-4 flex items-start justify-between rounded-xl border border-yellow-300 bg-yellow-50 p-4 text-yellow-800 dark:border-yellow-600 dark:bg-yellow-900/40 dark:text-yellow-200">
-                <p className="text-sm">Su empresa no configuró la cantidad de puntos a otorgar por cada monto.</p>
-                <Tooltip message="Para eso la empresa debe ingresar a https://gestion.awerreviews.com. Dirigirse a Fidelización en el slide de la izquierda y seleccionar Awer Loyalty. Allí al apartado Niveles y acciones y configurar allí">
+                <p className="text-sm">
+                  Su empresa aún no configuró la cantidad de puntos a otorgar por cada monto de compra.
+                </p>
+                <Tooltip message="Para configurarlo, ingrese en https://gestion.awerreviews.com. Luego diríjase al menú 'Fidelización' en el panel lateral, seleccione 'Awer Loyalty' y, dentro de 'Niveles y acciones', establezca la configuración correspondiente.">
                   <button
                     type="button"
                     className="ml-4 flex h-6 w-6 items-center justify-center rounded-full border border-yellow-400 text-xs font-bold text-yellow-700 dark:border-yellow-600 dark:text-yellow-200"
