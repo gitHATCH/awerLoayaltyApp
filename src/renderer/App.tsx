@@ -59,7 +59,10 @@ const App: React.FC = () => {
         setCompanyName(companyName);
         setCompanyLogo(companyLogo);
         setBranches(branches);
-      } catch {
+      } catch (error) {
+        if (error instanceof Error && error.message === 'INVALID_POS') {
+          alert('El punto de venta configurado no corresponde a la empresa o está suspendido');
+        }
         handleLogout();
         return;
       }

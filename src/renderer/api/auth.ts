@@ -75,6 +75,12 @@ export async function fetchBranches(companyId: number): Promise<CompanyData> {
   const companyName = data.name;
   const companyLogo = data.companyProfile?.logoFile || '';
 
+  const storedPos = localStorage.getItem('pos');
+  if (storedPos && !branches.some((b) => b.id === Number(storedPos))) {
+    localStorage.removeItem('pos');
+    throw new Error('INVALID_POS');
+  }
+
   return { companyName, companyLogo, branches };
 }
 

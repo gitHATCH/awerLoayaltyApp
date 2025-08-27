@@ -40,10 +40,14 @@ const LoginUser: React.FC<Props> = ({ onLogin }) => {
       setCompanyLogo(companyLogo);
       setBranches(branches);
       onLogin();
-    } catch {
+    } catch (err) {
       localStorage.removeItem('token');
       localStorage.removeItem('refresh_token');
-      setToast('Ocurrió un error, prueba de nuevo');
+      if (err instanceof Error && err.message === 'INVALID_POS') {
+        setToast('El punto de venta configurado no corresponde a la empresa o está suspendido');
+      } else {
+        setToast('Ocurrió un error, prueba de nuevo');
+      }
       setTimeout(() => setToast(null), 3000);
     } finally {
       setLoading(false);
