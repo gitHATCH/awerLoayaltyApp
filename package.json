@@ -42,20 +42,20 @@
         "dmg"
       ],
       "category": "public.app-category.productivity",
-      "icon": "build/icon.png"
+      "icon": "build/favicon.ico"
     },
     "win": {
       "target": [
         "nsis"
       ],
-      "icon": "build/icon.png"
+      "icon": "build/favicon.ico"
     },
     "linux": {
       "target": [
         "AppImage"
       ],
       "category": "Utility",
-      "icon": "build/icon.png"
+      "icon": "build/favicon.ico"
     },
     "publish": [
       {
