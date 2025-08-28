@@ -14,16 +14,9 @@ import Spinner from './components/Spinner';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { useCompany } from './context/CompanyContext';
+import UpdateNotice from './components/UpdateNotice';
 
 type Screen = 'loading' | 'login1' | 'login2' | 'home' | 'pos' | 'points1' | 'points2' | 'points3';
-
-declare global {
-  interface Window {
-    awer: {
-      ping: () => Promise<string>;
-    };
-  }
-}
 
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState<Screen>('loading');
@@ -162,6 +155,7 @@ const App: React.FC = () => {
       <Header onLogout={handleLogout} />
       <main className="flex-1 overflow-y-auto brand-scroll">{content}</main>
       <Footer theme={theme} onToggle={toggleTheme} />
+      <UpdateNotice />
     </div>
   );
 };

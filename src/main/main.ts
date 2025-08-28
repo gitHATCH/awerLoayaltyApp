@@ -1,10 +1,12 @@
-import { app, BrowserWindow, Menu } from "electron"
+import { app, BrowserWindow, Menu, ipcMain } from "electron"
+import { autoUpdater } from "electron-updater"
 import { join } from "node:path"
 
 const isDev = process.env.NODE_ENV === "development"
+let win: BrowserWindow | null = null
 
 function createWindow() {
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 1024,
     height: 768,
     show: false,
@@ -25,4 +27,25 @@ function createWindow() {
   }
 }
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+  createWindow()
+  autoUpdater.autoDownload = false
+  autoUpdater.checkForUpdates()
+
+  ipcMain.on("start_update", () => autoUpdater.downloadUpdate())
+
+  autoUpdater.on("update-available", () => {
+    win?.webContents.send("update_available")
+  })
+
+  autoUpdater.on("download-progress", (progress) => {
+    win?.webContents.send("download_progress", progress)
+  })
+
+  autoUpdater.on("update-downloaded", () => {
+    win?.webContents.send("update_downloaded")
+    setTimeout(() => {
+      autoUpdater.quitAndInstall()
+    }, 1000)
+  })
+})
