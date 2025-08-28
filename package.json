@@ -56,9 +56,8 @@
     },
     "publish": [
       {
-        "provider": "github",
-        "owner": "gitHATCH",
-        "repo": "awerLoayaltyApp"
+        "provider": "generic",
+        "url": "${env.BUCKET_URL}"
       }
     ]
   },
