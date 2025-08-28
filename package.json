@@ -57,9 +57,21 @@
     "publish": [
       {
         "provider": "generic",
-        "url": "${env.BUCKET_URL}"
+        "os": "win32",
+        "url": "${env.BUCKET_URL}/win"
+      },
+      {
+        "provider": "generic",
+        "os": "linux",
+        "url": "${env.BUCKET_URL}/linux"
+      },
+      {
+        "provider": "generic",
+        "os": "darwin",
+        "url": "${env.BUCKET_URL}/mac"
       }
     ]
+
   },
   "devDependencies": {
     "@types/react": "^19.1.10",
