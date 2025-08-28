@@ -30,7 +30,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
   const valueNum = parseFloat(amount) || 0;
   const points =
     unitAmount && pointsPerUnit
-      ? Math.floor((valueNum * pointsPerUnit) / unitAmount)
+      ? Math.floor(valueNum / unitAmount) * pointsPerUnit
       : 0;
   const configInvalid = !unitAmount || !pointsPerUnit;
 
