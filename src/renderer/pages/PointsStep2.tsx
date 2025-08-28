@@ -52,7 +52,8 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
     }
     setLoading(true);
     addPoints(value)
-      .then(({ profile: p, added }) => {
+      .then((p) => {
+        const added = p.points - profile.points;
         const days = expirationType ? expirationDays[expirationType] ?? 0 : 0;
         const d = new Date();
         d.setDate(d.getDate() + days);

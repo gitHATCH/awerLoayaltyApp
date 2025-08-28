@@ -109,7 +109,7 @@ export async function fetchUserByDniEmail(
   return profile;
 }
 
-export async function addPoints(amount: number): Promise<{ profile: UserProfile; added: number }> {
+export async function addPoints(amount: number): Promise<UserProfile> {
   if (!currentUser) {
     throw new Error('Usuario no cargado');
   }
@@ -118,8 +118,6 @@ export async function addPoints(amount: number): Promise<{ profile: UserProfile;
   if (!branchId) {
     throw new Error('INVALID_POS');
   }
-
-  const prevPoints = currentUser.points;
 
   const { data } = await axiosClient.post<ApiUser>(
     '/awer-core/reward/ext/purchase-points',
@@ -136,8 +134,6 @@ export async function addPoints(amount: number): Promise<{ profile: UserProfile;
   );
 
   const profile = mapUser(data);
-  const added = profile.points - prevPoints;
-
   currentUser = profile;
-  return { profile, added };
+  return profile;
 }
