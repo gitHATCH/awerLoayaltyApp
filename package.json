@@ -4,17 +4,16 @@
   "description": "Awer Loyalty Desktop App",
   "main": "dist/main/main.js",
   "scripts": {
-  "dev:renderer": "vite",
-  "dev:main": "cross-env WATCH=true tsup --watch",
-  "dev:electron": "wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .",
-  "dev": "concurrently -k -n RENDERER,MAIN,ELECTRON \"npm:dev:renderer\" \"npm:dev:main\" \"npm:dev:electron\"",
-
-  "build:renderer": "vite build",
-  "build:main": "tsup",
-  "build": "npm run build:renderer && npm run build:main",
-  "dist": "npm run build && electron-builder",
-  "start": "cross-env NODE_ENV=production electron ."
-},
+    "dev:renderer": "vite",
+    "dev:main": "cross-env WATCH=true tsup --watch",
+    "dev:electron": "wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .",
+    "dev": "concurrently -k -n RENDERER,MAIN,ELECTRON \"npm:dev:renderer\" \"npm:dev:main\" \"npm:dev:electron\"",
+    "build:renderer": "vite build",
+    "build:main": "tsup",
+    "build": "npm run build:renderer && npm run build:main",
+    "dist": "npm run build && dotenv -e .env electron-builder",
+    "start": "cross-env NODE_ENV=production electron ."
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gitHATCH/awerLoayaltyApp.git"
@@ -54,7 +53,13 @@
         "AppImage"
       ],
       "category": "Utility"
-    }
+    },
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "${env.BUCKET_URL}"
+      }
+    ]
   },
   "devDependencies": {
     "@types/react": "^19.1.10",
@@ -65,18 +70,20 @@
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.2.0",
     "cross-env": "^10.0.0",
+    "dotenv-cli": "^10.0.0",
     "electron": "^32.2.7",
     "electron-builder": "24.13.3",
     "eslint": "^9.33.0",
     "postcss": "^8.4.49",
-    "tsup": "^8.5.0",
     "tailwindcss": "^3.4.4",
+    "tsup": "^8.5.0",
     "typescript": "^5.9.2",
     "vite": "^7.1.3",
     "wait-on": "^8.0.4"
   },
   "dependencies": {
     "axios": "^1.7.7",
+    "electron-updater": "^6.6.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   }
