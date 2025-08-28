@@ -39,7 +39,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
   const valueNum = parseFloat(amount) || 0;
   const points =
     unitAmount && pointsPerUnit
-      ? Math.floor(valueNum / unitAmount) * pointsPerUnit
+      ? Math.floor(pointsPerUnit * (valueNum / unitAmount))
       : 0;
   const configInvalid = !unitAmount || !pointsPerUnit;
 
@@ -53,7 +53,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
     setLoading(true);
     addPoints(value)
       .then((p) => {
-        const added = p.points - profile.points;
+        const added = points;
         const days = expirationType ? expirationDays[expirationType] ?? 0 : 0;
         const d = new Date();
         d.setDate(d.getDate() + days);
