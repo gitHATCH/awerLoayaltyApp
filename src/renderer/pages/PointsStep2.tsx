@@ -20,8 +20,17 @@ const levelColors: Record<string, string> = {
   PLATINUM: "bg-gray-400 text-gray-900",
 };
 
+const expirationDays: Record<string, number> = {
+  THIRTY_DAYS: 30,
+  SIXTY_DAYS: 60,
+  NINETY_DAYS: 90,
+  ONE_HUNDRED_TWENTY_DAYS: 120,
+  ONE_HUNDRED_EIGHTY_DAYS: 180,
+  THREE_HUNDRED_SIXTY_FIVE_DAYS: 365,
+};
+
 const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
-  const { unitAmount, pointsPerUnit } = usePointsConfig();
+  const { unitAmount, pointsPerUnit, expirationType } = usePointsConfig();
   const [amount, setAmount] = React.useState("");
   const [toast, setToast] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
@@ -43,7 +52,13 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
     }
     setLoading(true);
     addPoints(value)
-      .then(({ profile: p, added, expires }) => onNext(p, added, expires))
+      .then(({ profile: p, added }) => {
+        const days = expirationType ? expirationDays[expirationType] ?? 0 : 0;
+        const d = new Date();
+        d.setDate(d.getDate() + days);
+        const expires = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+        onNext(p, added, expires);
+      })
       .catch((error: any) => {
         if (error.response?.status !== 401) {
           setToast("Ocurrió un error");

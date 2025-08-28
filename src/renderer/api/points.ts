@@ -18,6 +18,7 @@ export interface UserProfile {
 export interface PointsConfig {
   unitAmount: number | null;
   pointsPerUnit: number | null;
+  expirationType: string | null;
 }
 
 let currentUser: UserProfile | null = null;
@@ -26,10 +27,12 @@ export async function fetchPointsConfig(): Promise<PointsConfig> {
   const { data } = await axiosClient.get<{
     unitAmount?: number | null;
     pointsPerUnit?: number | null;
+    expirationType?: string | null;
   }>("/awer-core/reward/config");
   return {
     unitAmount: data.unitAmount ?? null,
     pointsPerUnit: data.pointsPerUnit ?? null,
+    expirationType: data.expirationType ?? null,
   };
 }
 
@@ -106,7 +109,7 @@ export async function fetchUserByDniEmail(
   return profile;
 }
 
-export async function addPoints(amount: number): Promise<{ profile: UserProfile; added: number; expires: string }> {
+export async function addPoints(amount: number): Promise<{ profile: UserProfile; added: number }> {
   if (!currentUser) {
     throw new Error('Usuario no cargado');
   }
@@ -134,10 +137,7 @@ export async function addPoints(amount: number): Promise<{ profile: UserProfile;
 
   const profile = mapUser(data);
   const added = profile.points - prevPoints;
-  const expires = data.expireDate
-    ? `${String(data.expireDate[2]).padStart(2, '0')}/${String(data.expireDate[1]).padStart(2, '0')}/${data.expireDate[0]}`
-    : '';
 
   currentUser = profile;
-  return { profile, added, expires };
+  return { profile, added };
 }
