@@ -1,4 +1,6 @@
 import React, { forwardRef } from 'react';
+import logoWhite from '../public/logo-white.png';
+import logoPrincipal from '../public/logo-principal.png';
 
 interface Props {
   onLogout: () => void;
@@ -18,7 +20,7 @@ const Header = forwardRef<HTMLDivElement, Props>(({ onLogout }, ref) => {
   }, []);
 
   // Ajusta el tamaño según el modo
-  const logoSrc = isDark ? "/logo-white.png" : "/logo-principal.png";
+  const logoSrc = isDark ? logoWhite : logoPrincipal;
   const logoClass = isDark
     ? "h-14 sm:h-24 md:h-32 w-auto"
     : "h-8 sm:h-10 md:h-12 w-auto";

@@ -3,6 +3,8 @@ import { login, fetchCurrentUser, fetchBranches } from '../api/auth';
 import Spinner from '../components/Spinner';
 import Toast from '../components/Toast';
 import { useCompany } from '../context/CompanyContext';
+import logoWhite from '../public/logo-white.png';
+import logoPrincipal from '../public/logo-principal.png';
 
 interface Props {
   onLogin: () => void;
@@ -54,7 +56,7 @@ const LoginUser: React.FC<Props> = ({ onLogin }) => {
     }
   };
 
-  const logoSrc = isDark ? "/logo-white.png" : "/logo-principal.png";
+  const logoSrc = isDark ? logoWhite : logoPrincipal;
 
   if (loading)
     return (
