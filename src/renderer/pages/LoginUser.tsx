@@ -13,6 +13,7 @@ interface Props {
 const LoginUser: React.FC<Props> = ({ onLogin }) => {
   const [user, setUser] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [isDark, setIsDark] = React.useState(false);
   const [toast, setToast] = React.useState<string | null>(null);
@@ -96,14 +97,34 @@ const LoginUser: React.FC<Props> = ({ onLogin }) => {
           onChange={(e) => setUser(e.target.value)}
           required
         />
-        <input
-          className="border rounded-lg px-3 py-2 sm:px-4 sm:py-3 dark:bg-gray-800 dark:border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 transition text-base sm:text-lg"
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <div className="relative">
+          <input
+            className="border rounded-lg px-3 py-2 sm:px-4 sm:py-3 dark:bg-gray-800 dark:border-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 transition text-base sm:text-lg w-full pr-10"
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((v) => !v)}
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+            aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+          >
+            {showPassword ? (
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                <path d="M3.53 2.47a.75.75 0 0 0-1.06 1.06l2.04 2.04C2.64 7.04 1.6 8.8 1.24 9.47a1.73 1.73 0 0 0 0 1.06C2.51 12.94 5.9 18 12 18c2.08 0 3.87-.5 5.37-1.28l3.1 3.1a.75.75 0 1 0 1.06-1.06l-18-18Z" />
+                <path d="M12 6c-1.03 0-2 .16-2.9.45l1.63 1.63A3.75 3.75 0 0 1 15.92 12l3.42 3.42c1.6-1.38 2.8-3.11 3.42-4.42a1.73 1.73 0 0 0 0-1.06C21.49 7.06 18.1 2 12 2c-2.02 0-3.8.5-5.32 1.28l1.5 1.5C9.2 6.28 10.56 6 12 6Z" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                <path d="M12 5c-6.21 0-9.6 5.06-10.76 7.47a1.73 1.73 0 0 0 0 1.06C2.4 15.94 5.79 21 12 21s9.6-5.06 10.76-7.47c.2-.35.2-.71 0-1.06C21.6 10.06 18.21 5 12 5Zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
+              </svg>
+            )}
+          </button>
+        </div>
+
         <button
           type="submit"
           disabled={loading}

@@ -92,6 +92,7 @@ app.whenReady().then(() => {
 
   // Allow renderer to query current update state in case it missed the event
   ipcMain.handle("get_update_state", () => updateAvailable)
+  ipcMain.handle("get_app_version", () => app.getVersion())
 })
 
 function checkWinUpdate() {

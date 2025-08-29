@@ -23,7 +23,14 @@ const App: React.FC = () => {
   const [profile, setProfile] = React.useState<UserProfile | null>(null);
   const [added, setAdded] = React.useState(0);
   const [expires, setExpires] = React.useState('');
-  const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = React.useState<'light' | 'dark'>(() => {
+    try {
+      const stored = localStorage.getItem('theme') as 'light' | 'dark' | null;
+      return stored ?? 'dark';
+    } catch {
+      return 'dark';
+    }
+  });
   const { setCompanyId, setCompanyName, setCompanyLogo, setBranches } = useCompany();
 
   React.useEffect(() => {

@@ -6,9 +6,14 @@ interface Props {
 }
 
 const Footer = forwardRef<HTMLDivElement, Props>(({ theme, onToggle }, ref) => {
+  const [version, setVersion] = React.useState<string>("");
   const [open, setOpen] = React.useState(false);
   const menuRef = React.useRef<HTMLDivElement>(null);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
+
+  React.useEffect(() => {
+    window.awer?.getVersion?.().then(v => setVersion(v)).catch(() => {});
+  }, []);
 
   React.useEffect(() => {
     if (!open) return;
@@ -35,7 +40,7 @@ const Footer = forwardRef<HTMLDivElement, Props>(({ theme, onToggle }, ref) => {
   return (
     <footer
       ref={ref}
-      className="w-full px-4 sm:px-8 py-2 sm:py-3 bg-white dark:bg-gray-900 shadow-md border-t border-green-200 dark:border-gray-700 flex justify-center items-center flex-shrink-0"
+      className="relative w-full px-4 sm:px-8 py-2 sm:py-3 bg-white dark:bg-gray-900 shadow-md border-t border-green-200 dark:border-gray-700 flex justify-center items-center flex-shrink-0"
     >
       <div className="flex items-center gap-3">
         <button
@@ -81,6 +86,9 @@ const Footer = forwardRef<HTMLDivElement, Props>(({ theme, onToggle }, ref) => {
           </div>
         )}
       </div>
+      {version && (
+        <span className="absolute right-4 text-xs text-gray-500 dark:text-gray-400 select-text">v{version}</span>
+      )}
     </footer>
   );
 });

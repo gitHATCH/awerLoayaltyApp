@@ -9,6 +9,7 @@ declare global {
       onUpdateDownloaded: (cb: () => void) => void
       startUpdate: () => Promise<unknown>
       getUpdateState: () => Promise<boolean>
+      getVersion: () => Promise<string>
     }
   }
 }
