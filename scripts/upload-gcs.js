@@ -38,6 +38,12 @@ async function uploadRelease() {
     const dest = path.posix.join(prefix, file);
     await bucket.upload(full, { destination: dest, resumable: false });
     console.log(`Subido: ${dest}`);
+
+    // Hacer públicos los artefactos necesarios para que electron-updater pueda acceder
+    if (file.endsWith('latest.yml') || file.endsWith('.exe')) {
+      await bucket.file(dest).makePublic();
+      console.log(`Publicado: ${dest}`);
+    }
   }
 }
 
