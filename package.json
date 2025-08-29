@@ -14,7 +14,7 @@
     "clean:release": "rimraf release",
     "dist": "npm run clean:release && npm run build && dotenv -e .env electron-builder",
     "publish:gcs": "node scripts/upload-gcs.js",
-    "dist:publish": "npm run clean:release && npm run build && dotenv -e .env electron-builder && npm run publish:gcs",
+    "dist:publish": "npm run clean:release && npm run build && dotenv -e .env electron-builder && node scripts/sign-release.js && npm run publish:gcs",
     "start": "cross-env NODE_ENV=production electron ."
   },
   "repository": {
