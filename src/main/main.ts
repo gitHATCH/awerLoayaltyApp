@@ -1,3 +1,4 @@
+import "dotenv/config"
 import { app, BrowserWindow, Menu, ipcMain } from "electron"
 import { autoUpdater } from "electron-updater"
 import { join } from "node:path"
