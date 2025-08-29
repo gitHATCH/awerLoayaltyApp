@@ -19,7 +19,7 @@ function createWindow() {
     }
   })
   Menu.setApplicationMenu(null)
-  win.once("ready-to-show", () => win.show())
+  win.once("ready-to-show", () => win?.show())
 
   if (isDev) {
     win.loadURL("http://localhost:5173") // 👈 dev con Vite
