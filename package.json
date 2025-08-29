@@ -11,9 +11,10 @@
     "build:renderer": "vite build",
     "build:main": "tsup",
     "build": "npm run build:renderer && npm run build:main",
-    "dist": "npm run build && dotenv -e .env electron-builder",
+    "clean:release": "rimraf release",
+    "dist": "npm run clean:release && npm run build && dotenv -e .env electron-builder",
     "publish:gcs": "node scripts/upload-gcs.js",
-    "dist:publish": "npm run build && dotenv -e .env electron-builder && npm run publish:gcs",
+    "dist:publish": "npm run clean:release && npm run build && dotenv -e .env electron-builder && npm run publish:gcs",
     "start": "cross-env NODE_ENV=production electron ."
   },
   "repository": {
@@ -94,6 +95,7 @@
     "electron-builder": "24.13.3",
     "eslint": "^9.33.0",
     "postcss": "^8.4.49",
+    "rimraf": "^6.0.1",
     "tailwindcss": "^3.4.4",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",

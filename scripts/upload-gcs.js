@@ -12,23 +12,26 @@ if (!bucketName) {
 const storage = new Storage({ keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS });
 const bucket = storage.bucket(bucketName);
 
-async function uploadDir(dir, prefix = '') {
-  for (const entry of fs.readdirSync(dir)) {
-    const full = path.join(dir, entry);
-    const stats = fs.statSync(full);
-    const dest = path.posix.join(prefix, entry);
+function platformPrefix(filename) {
+  const name = filename.toLowerCase();
+  if (name.includes('mac') || name.endsWith('.dmg') || name.endsWith('.zip')) return 'mac';
+  if (name.includes('linux') || name.endsWith('.appimage') || name.endsWith('.tar.gz')) return 'linux';
+  return 'win';
+}
 
-    if (stats.isDirectory()) {
-      await uploadDir(full, dest);
-    } else {
-      await bucket.upload(full, { destination: dest, resumable: false });
-      console.log(`Subido: ${dest}`);
-    }
+async function uploadRelease() {
+  const files = fs.readdirSync('release');
+  for (const file of files) {
+    const full = path.join('release', file);
+    if (fs.statSync(full).isDirectory()) continue;
+    const prefix = platformPrefix(file);
+    const dest = path.posix.join(prefix, file);
+    await bucket.upload(full, { destination: dest, resumable: false });
+    console.log(`Subido: ${dest}`);
   }
 }
 
-uploadDir('release')
-  .catch(err => {
-    console.error('Error subiendo archivos:', err);
-    process.exit(1);
-  });
+uploadRelease().catch(err => {
+  console.error('Error subiendo archivos:', err);
+  process.exit(1);
+});
