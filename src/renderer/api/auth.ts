@@ -1,4 +1,5 @@
 import axiosClient from './axiosClient';
+import axios, { AxiosError } from 'axios';
 
 export interface Brand {
   id: string;
@@ -34,17 +35,31 @@ export interface AuthResponse {
 
 export async function login(username: string, password: string): Promise<AuthResponse> {
   const params = new URLSearchParams({ username, password, grant_type: 'password' });
-  const { data } = await axiosClient.post<AuthResponse>(
-    '/awer-auth/oauth/token',
-    params,
-    {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${import.meta.env.VITE_BASIC_AUTH}`
+  try {
+    const { data } = await axiosClient.post<AuthResponse>(
+      '/awer-auth/oauth/token',
+      params,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: `Basic ${import.meta.env.VITE_BASIC_AUTH}`
+        }
+      }
+    );
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const err = error as AxiosError<any>;
+      if (
+        err.response?.status === 400 &&
+        err.response.data?.error === 'invalid_grant' &&
+        err.response.data?.error_description === 'Bad credentials'
+      ) {
+        throw new Error('BAD_CREDENTIALS');
       }
     }
-  );
-  return data;
+    throw error;
+  }
 }
 
 export interface UserInfo {

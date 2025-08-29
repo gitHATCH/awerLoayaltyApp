@@ -47,6 +47,8 @@ const LoginUser: React.FC<Props> = ({ onLogin }) => {
       localStorage.removeItem('refresh_token');
       if (err instanceof Error && err.message === 'INVALID_POS') {
         setToast('El punto de venta configurado no corresponde a la empresa o está suspendido');
+      } else if (err instanceof Error && err.message === 'BAD_CREDENTIALS') {
+        setToast('Usuario o contraseña incorrectos');
       } else {
         setToast('Ocurrió un error, prueba de nuevo');
       }
