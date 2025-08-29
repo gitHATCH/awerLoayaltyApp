@@ -12,6 +12,10 @@ const UpdateNotice: React.FC = () => {
       setProgress(100)
       setDownloading(false)
     })
+    // Ask main for current state in case event fired earlier
+    window.awer?.getUpdateState?.().then((v: boolean) => {
+      if (v) setAvailable(true)
+    })
   }, [])
 
   const start = () => {
@@ -22,7 +26,7 @@ const UpdateNotice: React.FC = () => {
   if (!available) return null
 
   return (
-    <div className="fixed bottom-4 right-4 w-72 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 p-4 rounded shadow-lg text-center space-y-2">
+    <div className="fixed z-50 bottom-4 right-4 w-72 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 p-4 rounded shadow-lg text-center space-y-2">
       {downloading ? (
         <>
           <p>Descargando actualización...</p>

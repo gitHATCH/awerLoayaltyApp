@@ -5,3 +5,4 @@ out
 .DS_Store
 .env
 gcp-key.json
+dev-app-update.yml

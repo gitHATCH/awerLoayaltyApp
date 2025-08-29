@@ -119,13 +119,19 @@ const App: React.FC = () => {
   const handleClosePoints = () => setScreen('home');
 
   if (screen === 'loading')
-    return (<div className="min-h-screen flex items-center justify-center"> <Spinner /> </div>
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner />
+        <UpdateNotice />
+      </div>
     );
-  if (screen === 'login1') return <LoginUser onLogin={handleLogged} />;
-  if (screen === 'login2') return <BrandSelect onSelect={handleBrand} onLogout={handleLogout} />;
 
   let content: React.ReactNode = null;
-  if (screen === 'home')
+  if (screen === 'login1')
+    content = <LoginUser onLogin={handleLogged} />;
+  else if (screen === 'login2')
+    content = <BrandSelect onSelect={handleBrand} onLogout={handleLogout} />;
+  else if (screen === 'home')
     content = <Home onChangePos={handleChangePos} onLoadPoints={handleStartPoints} />;
   else if (screen === 'pos')
     content = <PosSelect onSelect={handleSelectPos} onCancel={handleCancelPos} />;
@@ -150,11 +156,13 @@ const App: React.FC = () => {
     />
     );
 
+  const isAuth = screen === 'login1' || screen === 'login2';
+
   return (
     <div className="h-screen flex flex-col bg-transparent overflow-hidden">
-      <Header onLogout={handleLogout} />
+      {!isAuth && <Header onLogout={handleLogout} />}
       <main className="flex-1 overflow-y-auto brand-scroll">{content}</main>
-      <Footer theme={theme} onToggle={toggleTheme} />
+      {!isAuth && <Footer theme={theme} onToggle={toggleTheme} />}
       <UpdateNotice />
     </div>
   );

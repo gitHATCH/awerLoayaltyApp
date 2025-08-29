@@ -7,7 +7,8 @@ declare global {
       onUpdateAvailable: (cb: () => void) => void
       onDownloadProgress: (cb: (p: { percent: number }) => void) => void
       onUpdateDownloaded: (cb: () => void) => void
-      startUpdate: () => void
+      startUpdate: () => Promise<unknown>
+      getUpdateState: () => Promise<boolean>
     }
   }
 }
