@@ -12,7 +12,8 @@
     "build:main": "tsup",
     "build": "npm run build:renderer && npm run build:main",
     "dist": "npm run build && dotenv -e .env electron-builder",
-    "dist:publish": "npm run build && dotenv -e .env electron-builder -p always",
+    "publish:gcs": "node scripts/upload-gcs.js",
+    "dist:publish": "npm run build && dotenv -e .env electron-builder && npm run publish:gcs",
     "start": "cross-env NODE_ENV=production electron ."
   },
   "repository": {
@@ -78,6 +79,7 @@
     }
   },
   "devDependencies": {
+    "@google-cloud/storage": "^7.17.0",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
@@ -86,6 +88,7 @@
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.2.0",
     "cross-env": "^10.0.0",
+    "dotenv": "^17.2.1",
     "dotenv-cli": "^10.0.0",
     "electron": "^32.2.7",
     "electron-builder": "24.13.3",
