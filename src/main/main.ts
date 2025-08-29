@@ -54,9 +54,20 @@ app.whenReady().then(() => {
 
 function checkWinUpdate() {
   if (process.platform !== "win32") return
-  const feed = autoUpdater.getFeedURL()
-  if (!feed) return
-  autoUpdater.setFeedURL({ provider: "generic", url: feed })
+
+  const feed = process.env.BUCKET_URL
+    ? `${process.env.BUCKET_URL.replace(/\/$/, "")}/win`
+    : autoUpdater.getFeedURL()
+
+  if (!isValidHttpUrl(feed)) return
+
+  try {
+    autoUpdater.setFeedURL({ provider: "generic", url: feed })
+  } catch (err) {
+    console.error("failed to set feed URL", err)
+    return
+  }
+
   const url = `${feed.replace(/\/$/, "")}/latest.yml`
   get(url, (res) => {
     if (res.statusCode !== 200) return
@@ -71,6 +82,16 @@ function checkWinUpdate() {
       }
     })
   }).on("error", (e) => console.error("update check failed", e))
+}
+
+function isValidHttpUrl(url?: string | null): url is string {
+  if (!url) return false
+  try {
+    const { protocol } = new URL(url)
+    return protocol === "http:" || protocol === "https:"
+  } catch {
+    return false
+  }
 }
 
 function isNewerVersion(current: string, latest: string) {
