@@ -20,10 +20,20 @@ function platformPrefix(filename) {
 }
 
 async function uploadRelease() {
-  const files = fs.readdirSync('release');
+  const entries = fs.readdirSync('release');
+  const files = entries.filter(f => fs.statSync(path.join('release', f)).isFile());
+
+  // elimina los artefactos existentes de las plataformas que se van a subir
+  const prefixes = [...new Set(files.map(platformPrefix))];
+  for (const prefix of prefixes) {
+    await bucket.deleteFiles({ prefix: `${prefix}/` }).catch(err => {
+      if (err.code !== 404) throw err;
+    });
+    console.log(`Limpio remoto: ${prefix}/`);
+  }
+
   for (const file of files) {
     const full = path.join('release', file);
-    if (fs.statSync(full).isDirectory()) continue;
     const prefix = platformPrefix(file);
     const dest = path.posix.join(prefix, file);
     await bucket.upload(full, { destination: dest, resumable: false });
