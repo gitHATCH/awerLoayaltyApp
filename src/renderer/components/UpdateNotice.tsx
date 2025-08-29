@@ -6,9 +6,9 @@ const UpdateNotice: React.FC = () => {
   const [progress, setProgress] = React.useState(0)
 
   React.useEffect(() => {
-    window.awer.onUpdateAvailable(() => setAvailable(true))
-    window.awer.onDownloadProgress((p) => setProgress(p.percent))
-    window.awer.onUpdateDownloaded(() => {
+    window.awer?.onUpdateAvailable(() => setAvailable(true))
+    window.awer?.onDownloadProgress((p) => setProgress(p.percent))
+    window.awer?.onUpdateDownloaded(() => {
       setProgress(100)
       setDownloading(false)
     })
@@ -16,7 +16,7 @@ const UpdateNotice: React.FC = () => {
 
   const start = () => {
     setDownloading(true)
-    window.awer.startUpdate()
+    window.awer?.startUpdate()
   }
 
   if (!available) return null

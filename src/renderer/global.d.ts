@@ -2,7 +2,7 @@ export {}
 
 declare global {
   interface Window {
-    awer: {
+    awer?: {
       ping: () => Promise<string>
       onUpdateAvailable: (cb: () => void) => void
       onDownloadProgress: (cb: (p: { percent: number }) => void) => void
