@@ -12,31 +12,45 @@ if (!bucketName) {
 const storage = new Storage({ keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS });
 const bucket = storage.bucket(bucketName);
 
+function isUat() {
+  const env = (process.env.ENVIROMENT || "prod").toLowerCase();
+  return env === "dev" || env === "uat";
+}
+
 function currentPlatformPrefix() {
   switch (process.platform) {
     case 'darwin':
-      return 'mac';
+      return isUat() ? 'mac-uat' : 'mac';
     case 'win32':
-      return 'win';
+      return isUat() ? 'win-uat' : 'win';
     case 'linux':
     default:
-      return 'linux';
+      return isUat() ? 'linux-uat' : 'linux';
   }
 }
 
+function basePlatform(prefix) {
+  // Normalize prefixes like 'win-uat' -> 'win'
+  if (!prefix) return 'linux';
+  if (prefix.startsWith('win')) return 'win';
+  if (prefix.startsWith('mac')) return 'mac';
+  return 'linux';
+}
+
 function shouldUploadFor(prefix, filename) {
+  const plat = basePlatform(prefix);
   const name = filename.toLowerCase();
   // Ignorar archivos internos de electron-builder
   if (name.startsWith('builder-debug') || name.startsWith('builder-effective-config')) return false;
 
-  if (prefix === 'linux') {
+  if (plat === 'linux') {
     return (
       name.endsWith('.appimage') ||
       name.endsWith('.tar.gz') ||
       name.endsWith('latest-linux.yml')
     );
   }
-  if (prefix === 'win') {
+  if (plat === 'win') {
     return (
       name.endsWith('.exe') ||
       name.endsWith('.msi') ||
@@ -53,6 +67,10 @@ function shouldUploadFor(prefix, filename) {
 }
 
 async function uploadRelease() {
+  if (!fs.existsSync('release')) {
+    console.error("Directorio 'release' no encontrado. Asegúrate de que electron-builder haya generado artefactos (npm run dist o dist:publish)." );
+    process.exit(1);
+  }
   const entries = fs.readdirSync('release');
   const allFiles = entries.filter(f => fs.statSync(path.join('release', f)).isFile());
 
@@ -74,10 +92,11 @@ async function uploadRelease() {
 
     // Hacer públicos los artefactos necesarios para que electron-updater pueda acceder
     const lower = file.toLowerCase();
+    const plat = basePlatform(prefix);
     const makePublic = (
-      (prefix === 'win' && (lower.endsWith('latest.yml') || lower.endsWith('.exe') || lower.endsWith('.msi'))) ||
-      (prefix === 'linux' && (lower.endsWith('latest-linux.yml') || lower.endsWith('.appimage') || lower.endsWith('.tar.gz'))) ||
-      (prefix === 'mac' && (lower.endsWith('latest-mac.yml') || lower.endsWith('.dmg') || lower.endsWith('.zip')))
+      (plat === 'win' && (lower.endsWith('latest.yml') || lower.endsWith('.exe') || lower.endsWith('.msi'))) ||
+      (plat === 'linux' && (lower.endsWith('latest-linux.yml') || lower.endsWith('.appimage') || lower.endsWith('.tar.gz'))) ||
+      (plat === 'mac' && (lower.endsWith('latest-mac.yml') || lower.endsWith('.dmg') || lower.endsWith('.zip')))
     );
     if (makePublic) {
       await bucket.file(dest).makePublic();
@@ -90,4 +109,3 @@ uploadRelease().catch(err => {
   console.error('Error subiendo archivos:', err);
   process.exit(1);
 });
-

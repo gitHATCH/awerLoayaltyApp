@@ -6,6 +6,24 @@ import { existsSync, writeFileSync } from "node:fs"
 import { get } from "node:https"
 
 const isDev = process.env.NODE_ENV === "development"
+
+function isUatEnv() {
+  const env = (process.env.ENVIROMENT || "prod").toLowerCase()
+  return env === "dev" || env === "uat"
+}
+
+function platformDir() {
+  const suffix = isUatEnv() ? "-uat" : ""
+  switch (process.platform) {
+    case "darwin":
+      return `mac${suffix}`
+    case "win32":
+      return `win${suffix}`
+    case "linux":
+    default:
+      return `linux${suffix}`
+  }
+}
 let win: BrowserWindow | null = null
 let updateAvailable = false
 
@@ -48,7 +66,7 @@ app.whenReady().then(() => {
       // Ensure dev-app-update.yml exists for electron-updater
       const devCfgPath = join(process.cwd(), "dev-app-update.yml")
       if (!existsSync(devCfgPath) && process.env.BUCKET_URL) {
-        const feed = `${process.env.BUCKET_URL.replace(/\/$/, "")}/win`
+        const feed = `${process.env.BUCKET_URL.replace(/\/$/, "")}/${platformDir()}`
         const yaml = `provider: generic\nurl: ${feed}\n`
         try {
           writeFileSync(devCfgPath, yaml, "utf8")
@@ -99,7 +117,7 @@ function checkWinUpdate() {
   if (process.platform !== "win32") return
   
   const feed = process.env.BUCKET_URL
-  ? `${process.env.BUCKET_URL.replace(/\/$/, "")}/win`
+  ? `${process.env.BUCKET_URL.replace(/\/$/, "")}/${platformDir()}`
   : autoUpdater.getFeedURL()
   
   if (!isValidHttpUrl(feed)) return

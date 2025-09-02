@@ -12,9 +12,9 @@
     "build:main": "tsup",
     "build": "npm run build:renderer && npm run build:main",
     "clean:release": "rimraf release",
-    "dist": "npm run clean:release && npm run build && dotenv -e .env electron-builder",
+    "dist": "npm run clean:release && npm run build && node scripts/run-builder.js",
     "publish:gcs": "node scripts/upload-gcs.js",
-    "dist:publish": "npm run clean:release && npm run build && dotenv -e .env electron-builder && node scripts/sign-release.js && npm run publish:gcs",
+    "dist:publish": "npm run clean:release && npm run build && node scripts/run-builder.js && node scripts/sign-release.js && npm run publish:gcs",
     "start": "cross-env NODE_ENV=production electron ."
   },
   "repository": {
@@ -49,7 +49,7 @@
       "publish": [
         {
           "provider": "generic",
-          "url": "${env.BUCKET_URL}/mac"
+          "url": "${env.BUCKET_URL}/mac${env.PUBLISH_DIR_SUFFIX}"
         }
       ]
     },
@@ -61,7 +61,7 @@
       "publish": [
         {
           "provider": "generic",
-          "url": "${env.BUCKET_URL}/win"
+          "url": "${env.BUCKET_URL}/win${env.PUBLISH_DIR_SUFFIX}"
         }
       ]
     },
@@ -74,7 +74,7 @@
       "publish": [
         {
           "provider": "generic",
-          "url": "${env.BUCKET_URL}/linux"
+          "url": "${env.BUCKET_URL}/linux${env.PUBLISH_DIR_SUFFIX}"
         }
       ]
     },
