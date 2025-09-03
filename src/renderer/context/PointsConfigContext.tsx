@@ -4,6 +4,8 @@ interface PointsConfigContextValue {
   unitAmount: number | null;
   pointsPerUnit: number | null;
   expirationType: string | null;
+  pointsActive: boolean;
+  setPointsActive: React.Dispatch<React.SetStateAction<boolean>>;
   setUnitAmount: React.Dispatch<React.SetStateAction<number | null>>;
   setPointsPerUnit: React.Dispatch<React.SetStateAction<number | null>>;
   setExpirationType: React.Dispatch<React.SetStateAction<string | null>>;
@@ -15,9 +17,10 @@ export const PointsConfigProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [unitAmount, setUnitAmount] = React.useState<number | null>(null);
   const [pointsPerUnit, setPointsPerUnit] = React.useState<number | null>(null);
   const [expirationType, setExpirationType] = React.useState<string | null>(null);
+  const [pointsActive, setPointsActive] = React.useState<boolean>(false);
 
   return (
-    <PointsConfigContext.Provider value={{ unitAmount, pointsPerUnit, expirationType, setUnitAmount, setPointsPerUnit, setExpirationType }}>
+    <PointsConfigContext.Provider value={{ unitAmount, pointsPerUnit, expirationType, setUnitAmount, setPointsPerUnit, setExpirationType, pointsActive, setPointsActive }}>
       {children}
     </PointsConfigContext.Provider>
   );

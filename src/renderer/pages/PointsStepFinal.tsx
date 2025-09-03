@@ -118,7 +118,7 @@ const PointsStepFinal: React.FC<Props> = ({ profile, added, expires, onBack, onC
               <div className="rounded-xl bg-gray-50 dark:bg-gray-800/60 p-2 sm:p-3">
                 <p className="text-[11px] sm:text-sm text-gray-600 dark:text-gray-300">Total canjeado</p>
                 <p className="mt-0.5 sm:mt-1 text-lg sm:text-3xl font-extrabold text-gray-900 dark:text-white">
-                  {profile.totalRedeemed.toLocaleString()}
+                  {profile?.totalRedeemed?.toLocaleString()}
                 </p>
               </div>
             </div>

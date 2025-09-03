@@ -19,6 +19,7 @@ export interface PointsConfig {
   unitAmount: number | null;
   pointsPerUnit: number | null;
   expirationType: string | null;
+  pointsActive: boolean;
 }
 
 let currentUser: UserProfile | null = null;
@@ -28,11 +29,13 @@ export async function fetchPointsConfig(): Promise<PointsConfig> {
     unitAmount?: number | null;
     pointsPerUnit?: number | null;
     expirationType?: string | null;
+    hasPurchaseActive?: boolean;
   }>("/awer-core/reward/config");
   return {
     unitAmount: data.unitAmount ?? null,
     pointsPerUnit: data.pointsPerUnit ?? null,
     expirationType: data.expirationType ?? null,
+    pointsActive: data.hasPurchaseActive ?? false,
   };
 }
 

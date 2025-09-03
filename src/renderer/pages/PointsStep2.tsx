@@ -30,7 +30,7 @@ const expirationDays: Record<string, number> = {
 };
 
 const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
-  const { unitAmount, pointsPerUnit, expirationType } = usePointsConfig();
+  const { unitAmount, pointsPerUnit, expirationType, pointsActive } = usePointsConfig();
   const [amount, setAmount] = React.useState("");
   const [toast, setToast] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
@@ -41,7 +41,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
     unitAmount && pointsPerUnit
       ? Math.floor(pointsPerUnit * (valueNum / unitAmount))
       : 0;
-  const configInvalid = !unitAmount || !pointsPerUnit;
+  const configInvalid = !unitAmount || !pointsPerUnit || !pointsActive;
 
   const handleNext = () => {
     const value = parseFloat(amount);
@@ -171,7 +171,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
               <div className="rounded-xl bg-gray-50 dark:bg-gray-800/60 p-2 sm:p-3">
                 <p className="text-[11px] sm:text-sm text-gray-600 dark:text-gray-300">Total canjeado</p>
                 <p className="mt-0.5 sm:mt-1 text-lg sm:text-3xl font-extrabold text-gray-900 dark:text-white">
-                  {profile.totalRedeemed.toLocaleString()}
+                  {profile?.totalRedeemed?.toLocaleString()}
                 </p>
               </div>
             </div>
@@ -238,7 +238,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
               {/* Botón (fila 1, col 2) — alineado con el input */}
               <button
                 onClick={handleNext}
-                disabled={points <= 0}
+                disabled={points <= 0 || configInvalid}
                 className="sm:col-start-2 sm:row-start-1 w-full sm:w-auto px-6 sm:px-10 h-[48px] sm:h-[52px] rounded-full font-extrabold text-white bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 shadow-lg transition"
               >
                 Sumar mis puntos

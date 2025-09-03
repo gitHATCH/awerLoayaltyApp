@@ -20,15 +20,16 @@ const PointsStep1: React.FC<Props> = ({ onBack, onNext }) => {
   const [emails, setEmails] = React.useState<string[]>([]);
   const [toast, setToast] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
-  const { unitAmount, pointsPerUnit, setUnitAmount, setPointsPerUnit, setExpirationType } = usePointsConfig();
+  const { unitAmount, pointsPerUnit, setUnitAmount, pointsActive, setPointsPerUnit, setExpirationType, setPointsActive } = usePointsConfig();
   const [configLoading, setConfigLoading] = React.useState(true);
 
   React.useEffect(() => {
     fetchPointsConfig()
-      .then(({ unitAmount, pointsPerUnit, expirationType }) => {
+      .then(({ unitAmount, pointsPerUnit, expirationType, pointsActive }) => {
         setUnitAmount(unitAmount);
         setPointsPerUnit(pointsPerUnit);
         setExpirationType(expirationType);
+        setPointsActive(pointsActive);
       })
       .catch((error: any) => {
         if (error.response?.status !== 401) {
@@ -40,9 +41,9 @@ const PointsStep1: React.FC<Props> = ({ onBack, onNext }) => {
         }
       })
       .finally(() => setConfigLoading(false));
-  }, [onBack, setUnitAmount, setPointsPerUnit, setExpirationType]);
+  }, [onBack, setUnitAmount, setPointsPerUnit, setExpirationType, setPointsActive]);
 
-  const configInvalid = !unitAmount || !pointsPerUnit;
+  const configInvalid = !unitAmount || !pointsPerUnit || !pointsActive;
 
   const showError = (msg: string) => {
     setToast(msg);
