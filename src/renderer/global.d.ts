@@ -10,6 +10,7 @@ declare global {
       startUpdate: () => Promise<unknown>
       getUpdateState: () => Promise<boolean>
       getVersion: () => Promise<string>
+      openExternal: (url: string) => Promise<void>
     }
   }
 }

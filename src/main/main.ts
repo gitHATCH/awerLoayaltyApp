@@ -1,5 +1,5 @@
 import "dotenv/config"
-import { app, BrowserWindow, Menu, ipcMain } from "electron"
+import { app, BrowserWindow, Menu, ipcMain, shell } from "electron"
 import { autoUpdater } from "electron-updater"
 import { join } from "node:path"
 import { existsSync, writeFileSync } from "node:fs"
@@ -111,6 +111,9 @@ app.whenReady().then(() => {
   // Allow renderer to query current update state in case it missed the event
   ipcMain.handle("get_update_state", () => updateAvailable)
   ipcMain.handle("get_app_version", () => app.getVersion())
+
+  // Open external links in the user's default browser
+  ipcMain.handle("open_external", (_e, url: string) => shell.openExternal(url))
 })
 
 function checkWinUpdate() {

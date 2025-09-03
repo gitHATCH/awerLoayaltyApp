@@ -144,10 +144,14 @@ const PointsStep1: React.FC<Props> = ({ onBack, onNext }) => {
           <div className="w-full">
             <input
               type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              autoComplete="off"
               placeholder="DNI del cliente"
               value={dni}
               onChange={(e) => {
-                setDni(e.target.value);
+                const onlyDigits = e.target.value.replace(/\D+/g, "");
+                setDni(onlyDigits);
                 setEmails([]);
               }}
               className="w-full rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
