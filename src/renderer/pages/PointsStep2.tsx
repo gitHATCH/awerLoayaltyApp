@@ -94,7 +94,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
     );
 
   return (
-    <div className="min-h-full w-full flex items-center justify-center px-3 sm:px-6 py-6">
+    <div className="min-h-full w-full flex items-center justify-center px-3 sm:px-6 py-4 sm:py-6">
       {/* Card principal */}
       <div className="w-full max-w-3xl bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 rounded-3xl shadow-2xl animate-fade-in relative overflow-visible">
         {/* Encabezado visual + Botón volver */}
@@ -115,9 +115,9 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
             </svg>
           </button>
 
-          <div className="h-24 sm:h-28 bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 dark:from-green-700 dark:via-emerald-700 dark:to-green-800 rounded-t-3xl" />
-          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2">
-            <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-2xl bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 shadow-xl flex items-center justify-center">
+          <div className="h-16 sm:h-28 bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 dark:from-green-700 dark:via-emerald-700 dark:to-green-800 rounded-t-3xl" />
+          <div className="absolute -bottom-8 sm:-bottom-10 left-1/2 -translate-x-1/2">
+            <div className="h-14 w-14 sm:h-24 sm:w-24 rounded-2xl bg-white dark:bg-gray-900 border border-green-200 dark:border-gray-700 shadow-xl flex items-center justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-10 w-10 text-green-600 dark:text-green-400">
                 <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm-7.5 8.25A8.25 8.25 0 0 1 12 12.75a8.25 8.25 0 0 1 7.5 7.5.75.75 0 0 1-.75.75h-13.5a.75.75 0 0 1-.75-.75Z" />
               </svg>
@@ -126,59 +126,59 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
         </div>
 
         {/* Contenido */}
-        <div className="px-5 sm:px-8 pt-14 pb-6">
+        <div className="px-4 sm:px-8 pt-12 sm:pt-14 pb-4 sm:pb-6">
           {/* Tarjeta de perfil */}
-          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-4 sm:p-6 mb-6">
-            <div className="flex items-start gap-4">
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm p-3 sm:p-6 mb-4 sm:mb-6">
+            <div className="flex items-start gap-3 sm:gap-4">
               <img
                 src={profile.avatar || userIcon}
                 onError={(e) => (e.currentTarget.src = userIcon)}
                 alt={profile.name}
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-green-400 dark:border-green-600 object-cover bg-white dark:bg-gray-800 flex-shrink-0"
+                className="w-12 h-12 sm:w-20 sm:h-20 rounded-full border-2 border-green-400 dark:border-green-600 object-cover bg-white dark:bg-gray-800 flex-shrink-0"
               />
               <div className="flex-1 min-w-0">
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                  <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-gray-900 dark:text-white truncate">
+                <div className="flex flex-wrap items-center gap-x-2 sm:gap-x-3 gap-y-1 sm:gap-y-2">
+                  <h2 className="text-lg sm:text-3xl font-black tracking-tight text-gray-900 dark:text-white truncate">
                     {profile.name}
                   </h2>
                   <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${medalClass}`}>
                     {profile.level}
                   </span>
                 </div>
-                <p className="mt-1 text-sm sm:text-base text-gray-600 dark:text-gray-300 truncate">
+                <p className="mt-0.5 text-xs sm:text-base text-gray-600 dark:text-gray-300 truncate">
                   {profile.email}
                 </p>
               </div>
             </div>
 
             {/* KPIs */}
-            <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-              <div className="rounded-xl bg-gray-50 dark:bg-gray-800/60 p-3">
-                <p className="text-sm text-gray-600 dark:text-gray-300">Puntos actuales</p>
-                <p className="mt-1 text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
+            <div className="mt-3 sm:mt-5 grid grid-cols-3 gap-2 sm:gap-4 text-center">
+              <div className="rounded-xl bg-gray-50 dark:bg-gray-800/60 p-2 sm:p-3">
+                <p className="text-[11px] sm:text-sm text-gray-600 dark:text-gray-300">Puntos actuales</p>
+                <p className="mt-0.5 sm:mt-1 text-lg sm:text-3xl font-extrabold text-gray-900 dark:text-white">
                   {profile.points.toLocaleString()}
                 </p>
               </div>
-              <div className="rounded-xl bg-gray-50 dark:bg-gray-800/60 p-3">
-                <p className="text-sm text-gray-600 dark:text-gray-300">Próximo nivel</p>
-                <p className="mt-1 text-base sm:text-xl font-bold text-gray-900 dark:text-white flex items-center justify-center gap-2">
+              <div className="rounded-xl bg-gray-50 dark:bg-gray-800/60 p-2 sm:p-3">
+                <p className="text-[11px] sm:text-sm text-gray-600 dark:text-gray-300">Próximo nivel</p>
+                <p className="mt-0.5 sm:mt-1 text-xs sm:text-xl font-bold text-gray-900 dark:text-white text-center sm:flex sm:items-center sm:justify-center sm:gap-2">
                   {profile.nextLevel}
-                  <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                  <span className="block sm:inline text-[10px] sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5 sm:mt-0">
                     ({profile.pointsToNext} pts)
                   </span>
                 </p>
               </div>
-              <div className="rounded-xl bg-gray-50 dark:bg-gray-800/60 p-3">
-                <p className="text-sm text-gray-600 dark:text-gray-300">Total canjeado</p>
-                <p className="mt-1 text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
+              <div className="rounded-xl bg-gray-50 dark:bg-gray-800/60 p-2 sm:p-3">
+                <p className="text-[11px] sm:text-sm text-gray-600 dark:text-gray-300">Total canjeado</p>
+                <p className="mt-0.5 sm:mt-1 text-lg sm:text-3xl font-extrabold text-gray-900 dark:text-white">
                   {profile.totalRedeemed.toLocaleString()}
                 </p>
               </div>
             </div>
 
             {/* Progreso */}
-            <div className="mt-5">
-              <div className="h-2 rounded-full bg-gray-200 dark:bg-gray-800 overflow-hidden">
+            <div className="mt-3 sm:mt-5">
+              <div className="h-1 sm:h-2 rounded-full bg-gray-200 dark:bg-gray-800 overflow-hidden">
                 <div
                   className="h-full bg-green-500 rounded-full transition-all"
                   style={{ width: `${progress}%` }}
@@ -188,7 +188,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
             </div>
 
             {profile.expiringPoints !== undefined && profile.expiringDate && (
-              <div className="mt-3 text-center text-xs sm:text-sm text-red-600 dark:text-red-400">
+              <div className="mt-2 sm:mt-3 text-center text-[11px] sm:text-sm text-red-600 dark:text-red-400">
                 Próximos a vencer: <b>{profile.expiringPoints}</b> pts - {profile.expiringDate}
               </div>
             )}
@@ -211,7 +211,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
                 </Tooltip>
               </div>
             )}
-            <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-2">
+            <p className="text-xs sm:text-base text-gray-700 dark:text-gray-300 mb-2">
               Ganás <b>{pointsPerUnit ?? 0} punto{pointsPerUnit === 1 ? '' : 's'}</b> por cada <b>${unitAmount ?? 0}</b>
             </p>
 
@@ -230,7 +230,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="Monto de la compra"
-                    className="w-full pl-7 pr-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full pl-7 pr-4 py-2.5 sm:py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
                   />
                 </div>
               </div>
@@ -245,9 +245,9 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
               </button>
 
               {/* Badge (fila 2, col 1) — debajo del input, no afecta alineación del botón */}
-              <div className="sm:col-start-1 sm:row-start-2 min-h-[1.5rem]" aria-live="polite">
+              <div className="sm:col-start-1 sm:row-start-2 min-h-[1.25rem]" aria-live="polite">
                 {points > 0 && (
-                  <span className="mt-1 inline-flex items-center gap-1 px-2 py-1 rounded-full border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-950/40 text-xs sm:text-sm text-green-700 dark:text-green-300">
+                  <span className="mt-0.5 inline-flex items-center gap-1 px-2 py-0.5 sm:py-1 rounded-full border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-950/40 text-[11px] sm:text-sm text-green-700 dark:text-green-300">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
                       <path d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm1 14-3-3h2V8h2v5h2Z" />
                     </svg>
@@ -258,7 +258,7 @@ const PointsStep2: React.FC<Props> = ({ profile, onBack, onNext, onError }) => {
             </div>
           </div>
 
-          <div className="mt-6 rounded-2xl border border-dashed border-green-300 dark:border-green-700 bg-green-50/60 dark:bg-green-950/40 px-4 py-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+          <div className="hidden sm:block mt-6 rounded-2xl border border-dashed border-green-300 dark:border-green-700 bg-green-50/60 dark:bg-green-950/40 px-4 py-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300">
             Consejo: revisá el progreso y vencimientos antes de acreditar.
           </div>
         </div>

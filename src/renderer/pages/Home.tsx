@@ -119,12 +119,9 @@ const Home: React.FC<Props> = ({ onChangePos, onLoadPoints }) => {
               </div>
             </button> */}
 
-            {/* Ayuda (placeholder) */}
             {/* Ayuda y soporte */}
-            <a
-              href="https://gestion.awerreviews.com/app/support"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => window.awer?.openExternal?.("https://gestion.awerreviews.com/app/support")}
               className="group w-full rounded-2xl px-5 py-4 sm:py-5 text-left border border-gray-200 dark:border-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-900 dark:text-white shadow transition-all"
               aria-label="Ayuda y soporte"
             >
@@ -145,7 +142,7 @@ const Home: React.FC<Props> = ({ onChangePos, onLoadPoints }) => {
                   </p>
                 </div>
               </div>
-            </a>
+            </button>
 
           </div>
 

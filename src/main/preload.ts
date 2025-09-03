@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld("awer", {
   startUpdate: () => ipcRenderer.invoke("start_update"),
   getUpdateState: () => ipcRenderer.invoke("get_update_state"),
   getVersion: () => ipcRenderer.invoke("get_app_version"),
+  openExternal: (url: string) => ipcRenderer.invoke("open_external", url),
   // acá vas exponiendo funciones específicas que necesite tu UI
 })
 
