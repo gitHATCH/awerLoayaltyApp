@@ -14,23 +14,23 @@ import Spinner from './components/Spinner';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { useCompany } from './context/CompanyContext';
+import UpdateNotice from './components/UpdateNotice';
 
 type Screen = 'loading' | 'login1' | 'login2' | 'home' | 'pos' | 'points1' | 'points2' | 'points3';
-
-declare global {
-  interface Window {
-    awer: {
-      ping: () => Promise<string>;
-    };
-  }
-}
 
 const App: React.FC = () => {
   const [screen, setScreen] = React.useState<Screen>('loading');
   const [profile, setProfile] = React.useState<UserProfile | null>(null);
   const [added, setAdded] = React.useState(0);
   const [expires, setExpires] = React.useState('');
-  const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = React.useState<'light' | 'dark'>(() => {
+    try {
+      const stored = localStorage.getItem('theme') as 'light' | 'dark' | null;
+      return stored ?? 'dark';
+    } catch {
+      return 'dark';
+    }
+  });
   const { setCompanyId, setCompanyName, setCompanyLogo, setBranches } = useCompany();
 
   React.useEffect(() => {
@@ -126,13 +126,19 @@ const App: React.FC = () => {
   const handleClosePoints = () => setScreen('home');
 
   if (screen === 'loading')
-    return (<div className="min-h-screen flex items-center justify-center"> <Spinner /> </div>
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner />
+        <UpdateNotice />
+      </div>
     );
-  if (screen === 'login1') return <LoginUser onLogin={handleLogged} />;
-  if (screen === 'login2') return <BrandSelect onSelect={handleBrand} onLogout={handleLogout} />;
 
   let content: React.ReactNode = null;
-  if (screen === 'home')
+  if (screen === 'login1')
+    content = <LoginUser onLogin={handleLogged} />;
+  else if (screen === 'login2')
+    content = <BrandSelect onSelect={handleBrand} onLogout={handleLogout} />;
+  else if (screen === 'home')
     content = <Home onChangePos={handleChangePos} onLoadPoints={handleStartPoints} />;
   else if (screen === 'pos')
     content = <PosSelect onSelect={handleSelectPos} onCancel={handleCancelPos} />;
@@ -157,11 +163,14 @@ const App: React.FC = () => {
     />
     );
 
+  const isAuth = screen === 'login1' || screen === 'login2';
+
   return (
     <div className="h-screen flex flex-col bg-transparent overflow-hidden">
-      <Header onLogout={handleLogout} />
+      {!isAuth && <Header onLogout={handleLogout} />}
       <main className="flex-1 overflow-y-auto brand-scroll">{content}</main>
-      <Footer theme={theme} onToggle={toggleTheme} />
+      {!isAuth && <Footer theme={theme} onToggle={toggleTheme} />}
+      <UpdateNotice />
     </div>
   );
 };

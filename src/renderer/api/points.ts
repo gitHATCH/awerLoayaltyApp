@@ -10,7 +10,7 @@ export interface UserProfile {
   level: string;
   nextLevel: string;
   pointsToNext: number;
-  totalRedeemed: number;
+  totalRedeemed?: number;
   expiringPoints?: number;
   expiringDate?: string;
 }
@@ -49,7 +49,7 @@ interface ApiUser {
   avatar?: string | null;
   pointsToExpire?: number | null;
   expireDate?: [number, number, number] | null;
-  totalRedeemedPoints: number;
+  totalRedeemedPoints?: number;
 }
 
 function mapUser(u: ApiUser): UserProfile {
@@ -76,7 +76,7 @@ function mapUser(u: ApiUser): UserProfile {
     level: u.userLevel,
     nextLevel: u.nextLevel,
     pointsToNext: u.pointsToNextLevel,
-    totalRedeemed: u.totalRedeemedPoints,
+    totalRedeemed: u.totalRedeemedPoints ? u.totalRedeemedPoints : 0,
     expiringPoints,
     expiringDate,
   };
