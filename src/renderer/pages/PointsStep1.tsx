@@ -63,7 +63,10 @@ const PointsStep1: React.FC<Props> = ({ onBack, onNext }) => {
           setEmails(res.map((u) => u.email));
         }
       })
-      .catch((e) => showError(e.message))
+      .catch((e) => {
+        console.log(e)
+        showError(e.response.data.displayMessage || e.message || "Ocurrió un error");
+      })
       .finally(() => setLoading(false));
   };
 
